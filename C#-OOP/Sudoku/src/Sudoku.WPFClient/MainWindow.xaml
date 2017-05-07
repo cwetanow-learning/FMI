@@ -1,0 +1,23 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sudoku.WPFClient"
+        xmlns:Models="clr-namespace:Sudoku.Models;assembly=Sudoku.Models"
+        xmlns:models="clr-namespace:Sudoku.Models"
+        x:Class="Sudoku.WPFClient.MainWindow"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="600">
+    <Grid Height="444" Width="582" VerticalAlignment="Top" HorizontalAlignment="Left" >
+        <models:SudokuControl x:Name="SudokuBoard" HorizontalAlignment="Left" Height="400" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="BtnClear" Click="BtnClear_OnClick" Margin="437,156,70,268" Content="Clear&#xD;&#xA;"></Button>
+        <Button x:Name="BtnNewGame" Click="BtnNewGame_OnClick" Content="New Game" HorizontalAlignment="Left" Margin="437,80,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="BtnSave" Click="BtnSave_OnClick" Content="Save" HorizontalAlignment="Left" Margin="437,288,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="BtnLoad" Click="BtnLoad_OnClick" Content="Load" HorizontalAlignment="Left" Margin="437,338,0,0" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="BtnCheck" Click="BtnCheck_OnClick" Content="Check" HorizontalAlignment="Left" Margin="437,117,0,0" VerticalAlignment="Top" Width="75"/>
+        <ComboBox Loaded="DifficultyBox_OnLoaded"  x:Name="DifficultyBox" HorizontalAlignment="Left" Margin="437,34,0,0" VerticalAlignment="Top" Width="120"/>
+        <TextBox x:Name="TxtBoxElapsed" IsEnabled="False" FontSize="24" Width="Auto" Margin="437,203,25,201"></TextBox>
+        <Button Click="ButtonBase_OnClick" Content="Exit" Margin="437,390,70,34"></Button>
+    </Grid>
+</Window>

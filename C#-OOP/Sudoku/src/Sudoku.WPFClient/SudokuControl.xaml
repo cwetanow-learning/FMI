@@ -1,0 +1,250 @@
+﻿<UserControl x:Class="Sudoku.Models.SudokuControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Sudoku.Models"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <Grid x:Name="Grid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Border  BorderBrush="Black" BorderThickness="2">
+            <Grid Grid.Column="0" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="txtBox_00" Grid.Row="0" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_01" Grid.Row="0" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_02" Grid.Row="0" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_10" Grid.Row="1" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_11" Grid.Row="1" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_12" Grid.Row="1" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_20" Grid.Row="2" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_21" Grid.Row="2" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_22"  Grid.Row="2" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+            </Grid>
+        </Border>
+        <Border Grid.Row="0" Grid.Column="1"  BorderBrush="Black" BorderThickness="2">
+            <Grid Grid.Column="1" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="txtBox_03" Grid.Row="0" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_04" Grid.Row="0" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_05" Grid.Row="0" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_13" Grid.Row="1" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_14" Grid.Row="1" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_15" Grid.Row="1" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_23" Grid.Row="2" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_24" Grid.Row="2" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_25" Grid.Row="2" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+            </Grid>
+        </Border>
+        <Border Grid.Row="0" Grid.Column="2"  BorderBrush="Black" BorderThickness="2">
+
+            <Grid Grid.Column="2" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="txtBox_06" Grid.Row="0" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_07" Grid.Row="0" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_08" Grid.Row="0" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_16" Grid.Row="1" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_17" Grid.Row="1" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_18" Grid.Row="1" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_26" Grid.Row="2" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_27" Grid.Row="2" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_28" Grid.Row="2" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="0" 
+                BorderBrush="Black" BorderThickness="2">
+
+            <Grid Grid.Column="0" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="txtBox_30" Grid.Row="0" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_31" Grid.Row="0" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_32" Grid.Row="0" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_40" Grid.Row="1" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_41" Grid.Row="1" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_42" Grid.Row="1" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_50" Grid.Row="2" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_51" Grid.Row="2" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_52" Grid.Row="2" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+
+            </Grid>
+        </Border>
+        <Border Grid.Row="1" Grid.Column="1" 
+                BorderBrush="Black" BorderThickness="2">
+
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="txtBox_33" Grid.Row="0" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_34" Grid.Row="0" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_35" Grid.Row="0" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_43" Grid.Row="1" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_44" Grid.Row="1" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_45" Grid.Row="1" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_53" Grid.Row="2" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_54" Grid.Row="2" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_55" Grid.Row="2" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+
+            </Grid>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="2" 
+                BorderBrush="Black" BorderThickness="2">
+
+            <Grid Grid.Column="2" Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="txtBox_36" Grid.Row="0" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_37" Grid.Row="0" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_38" Grid.Row="0" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_46" Grid.Row="1" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_47" Grid.Row="1" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_48" Grid.Row="1" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_56" Grid.Row="2" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_57" Grid.Row="2" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_58" Grid.Row="2" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="0"
+                BorderBrush="Black" BorderThickness="2">
+
+            <Grid Grid.Column="0" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="txtBox_60" Grid.Row="0" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_61" Grid.Row="0" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_62" Grid.Row="0" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_70" Grid.Row="1" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_71" Grid.Row="1" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_72" Grid.Row="1" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_80" Grid.Row="2" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_81" Grid.Row="2" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_82" Grid.Row="2" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="1" 
+                BorderBrush="Black" BorderThickness="2">
+            <Grid Grid.Column="1" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="txtBox_63" Grid.Row="0" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_64" Grid.Row="0" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_65" Grid.Row="0" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_73" Grid.Row="1" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_74" Grid.Row="1" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_75" Grid.Row="1" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_83" Grid.Row="2" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_84" Grid.Row="2" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_85" Grid.Row="2" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+
+            </Grid>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="2" BorderBrush="Black" BorderThickness="2">
+
+            <Grid Grid.Column="2" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+                <TextBox x:Name="txtBox_66" Grid.Row="0" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_67" Grid.Row="0" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_68" Grid.Row="0" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_76" Grid.Row="1" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_77" Grid.Row="1" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_78" Grid.Row="1" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_86" Grid.Row="2" Grid.Column="0" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_87" Grid.Row="2" Grid.Column="1" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+                <TextBox x:Name="txtBox_88" Grid.Row="2" Grid.Column="2" MaxLength="1" PreviewTextInput="UIElement_OnPreviewTextInput"></TextBox>
+
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>
+

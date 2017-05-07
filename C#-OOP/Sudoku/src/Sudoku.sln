@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.WPFClient", "Sudoku.WPFClient\Sudoku.WPFClient.csproj", "{C7F93352-999B-45D7-996F-37B10C506B46}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sudoku.Models", "Sudoku.Models\Sudoku.Models.csproj", "{881807E7-C145-429A-A515-F491FA038751}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C7F93352-999B-45D7-996F-37B10C506B46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7F93352-999B-45D7-996F-37B10C506B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7F93352-999B-45D7-996F-37B10C506B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7F93352-999B-45D7-996F-37B10C506B46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{881807E7-C145-429A-A515-F491FA038751}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{881807E7-C145-429A-A515-F491FA038751}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{881807E7-C145-429A-A515-F491FA038751}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{881807E7-C145-429A-A515-F491FA038751}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

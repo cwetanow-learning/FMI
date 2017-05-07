@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bitwise", "Bitwise\Bitwise.csproj", "{2EF19058-F157-47B7-BC4E-042900C58A72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeometryShapes", "GeometryShapes\GeometryShapes.csproj", "{1F142D8A-BE12-44E1-AF10-B4F603AA3726}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Geometry.Tests", "Geometry.Tests\Geometry.Tests.csproj", "{1A2C6DEA-5FD6-483F-838F-414865C77F3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2EF19058-F157-47B7-BC4E-042900C58A72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EF19058-F157-47B7-BC4E-042900C58A72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EF19058-F157-47B7-BC4E-042900C58A72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EF19058-F157-47B7-BC4E-042900C58A72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F142D8A-BE12-44E1-AF10-B4F603AA3726}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F142D8A-BE12-44E1-AF10-B4F603AA3726}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F142D8A-BE12-44E1-AF10-B4F603AA3726}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F142D8A-BE12-44E1-AF10-B4F603AA3726}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A2C6DEA-5FD6-483F-838F-414865C77F3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A2C6DEA-5FD6-483F-838F-414865C77F3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A2C6DEA-5FD6-483F-838F-414865C77F3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A2C6DEA-5FD6-483F-838F-414865C77F3B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
