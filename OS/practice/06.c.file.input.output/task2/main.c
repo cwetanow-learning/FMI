@@ -1,3 +1,5 @@
+//Реализирайте команда cat, работеща с произволен брой подадени входни параметри.
+
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>

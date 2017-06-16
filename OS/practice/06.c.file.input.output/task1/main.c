@@ -1,3 +1,5 @@
+// Реализирайте команда cp, работеща с два аргумента, подадени като входни параметри.
+
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
