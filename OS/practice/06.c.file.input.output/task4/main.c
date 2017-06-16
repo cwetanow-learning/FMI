@@ -1,7 +1,5 @@
 /*
-	Реализирайте команда swap, разменяща съдържанието на два файла, подадени като
-	входни параметри. Приемаме, че двата файла имат еднакъв брой символи. Може да
-	модифицирате решението, да работи и когато нямат еднакъв брой символи.
+Koпирайте файл /etc/passwd в текущата ви работна директория и променете разделителят на копирания файл от ":", на "?"
 */
 
 #include <stdio.h>
@@ -10,73 +8,34 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int main (int argc, char* argv[])
+int main()
 {
-	if (argc != 3) {
-		errx(1, "err");
+	int passwd;
+	int fd;
+	char c;
+
+	if ((passwd = open("passwd", O_RDONLY)) == -1)
+	{
+		write(2, "Err", 4);
 	}
 
-	int fd1;
-	fd1 = open(argv[1], O_RDWR);
-	if (fd1 == -1) {
-		err(2, "%s", argv[1]);
+	if ((fd = open("res", O_CREAT | O_WRONLY)) == -1)
+	{
+		write(2, "Err", 4);
 	}
 
-	int fd2;
-	fd2 = open(argv[2], O_RDWR);
-	if (fd2 == -1) {
-		close(fd1);
-		err(3, "%s", argv[2]);
-	}
-
-	int fd3;
-	fd3 = open("my_temp_file", O_CREAT | O_RDWR | O_TRUNC);
-	if (fd3 == -1) {
-		close(fd1);
-		close(fd2);
-		err(4, "%s", "my_temp_file");
-	}
-
-	char c[4096];
-	ssize_t read_size;
-
-
-	while ((read_size = read(fd1, &c, sizeof(c))) > 0) {
-		if (write(fd3, &c, read_size) != read_size ) {
-			close(fd1);
-			close(fd2);
-			close(fd3);
-			err(1, "Error while writing");
+	while (read(passwd, &c, 1))
+	{
+		if (c == ':')
+		{
+			c = '?';
 		}
+
+		write(fd, &c, 1);
 	}
 
-	lseek(fd1, 0, SEEK_SET);
-
-	while ((read_size = read(fd2, &c, sizeof(c))) > 0 ) {
-		if (write(fd1, &c, read_size) != read_size) {
-			close(fd1);
-			close(fd2);
-			close(fd3);
-			err(1, "Error while writing");
-		}
-	}
-
-	lseek(fd2, 0, SEEK_SET);
-	lseek(fd3, 0, SEEK_SET);
-
-	while ((read_size = read(fd3, &c, sizeof(c))) > 0) {
-		if (write(fd2, &c, read_size) != read_size) {
-			close(fd1);
-			close(fd2);
-			close(fd3);
-			err(1, "Error while writing");
-		}
-	}
-
-	close(fd1);
-	close(fd2);
-	close(fd3);
+	close(passwd);
+	close(fd);
 
 	exit(0);
 }
-
