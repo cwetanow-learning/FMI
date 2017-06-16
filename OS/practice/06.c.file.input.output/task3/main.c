@@ -4,36 +4,41 @@
 #include <fcntl.h>
 #include <stdio.h>
 
-int main (int argc, char* argv[]){
-	int fd1;
+int main(int argc, char *argv[])
+{
+	if (argc < 2)
+	{
+		write(2, "err\n", 4);
+	}
+	int readFile;
 	char c;
-	int lines = 0;
-	int words = 0;
-	int chars = 0;
 
-	if (argc != 2) {
-		fprintf(stderr, "err\n");
-		exit(1);
+	int writes[argc - 2];
+
+	if ((readFile = open(argv[1], O_RDONLY)) == -1)
+	{
+		exit(-1);
 	}
 
-	if ( (fd1 = open(argv[1], O_RDONLY)) == -1 ) {
-		fprintf(stderr, "Operation open failed\n");
-		exit(1);
-	}
-
-	while ( read(fd1, &c, 1) > 0 ) {
-		if (c=='\n') {
-			lines++;
-			words++;
+	for (int i = 0; i < argc - 2; i++)
+	{
+		if ((writes[i] = open(argv[i + 2], O_CREAT | O_WRONLY)) == -1)
+		{
+			write(1, "Cant open file ", 4);
+			continue;
 		}
-
-		if (c==' ') {
-			words++;
-		}
-
-		chars++;
 	}
 
-	printf("File %s has:\n%d number of lines.\n%d number of words.\n%d number of chars.\n", argv[1], lines, words, chars);
-	close(fd1);
+	while (read(readFile, &c, 1))
+	{
+		for (int i = 0; i < argc - 2; i++)
+		{
+			write(writes[i], &c, 1);
+			continue;
+		}
+	}
+
+	close(readFile);
+
+	exit(0);
 }
