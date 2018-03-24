@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Document</title>
+    <meta charset="UTF-16">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          rel="stylesheet"
+          crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <form role="form"
+              method="POST"
+              action="./validate.php">
+            <div class="form-group">
+                <label for="title">Име на предмета</label>
+                <input type="text"
+                       required
+                       maxlength="150"
+                       class="form-control"
+                       name="title">
+            </div>
+            <div class="form-group">
+                <label for="lector">Преподавател </label>
+                <input type="text"
+                       required
+                       maxlength="200"
+                       class="form-control"
+                       name="lector">
+            </div>
+            <div class="form-group">
+                <label for="description">Описание </label>
+                <input type="text"
+                       required
+                       maxlength="10"
+                       class="form-control"
+                       name="description">
+            </div>
+
+            <div class="form-group">
+                <label for="group">Група </label>
+                <select name="group"
+                        class="form-control">
+                    <option value="m">М</option>
+                    <option value="pm">ПМ</option>
+                    <option value="okn">ОКН</option>
+                    <option value="ykn">ЯКН</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="credits">Кредити </label>
+                <input type="number"
+                       min="0"
+                       step="1"
+                       class="form-control"
+                       name="credits">
+            </div>
+
+            <button type="submit"
+                    class="btn btn-default">Изпрати</button>
+        </form>
+    </div>
+</body>
+
+</html>
