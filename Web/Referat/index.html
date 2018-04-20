@@ -13,7 +13,7 @@
   <meta name="author"
         content="">
 
-  <title>Shop Item - Start Bootstrap Template</title>
+  <title>JSON Web Token</title>
 
   <link href="css/bootstrap.min.css"
         rel="stylesheet">
@@ -39,20 +39,11 @@
           <span class="icon-bar"></span>
         </button>
         <a class="navbar-brand"
-           href="#">Start Bootstrap</a>
+           href="#">JSON Web Token</a>
       </div>
       <div class="collapse navbar-collapse"
            id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li>
-            <a href="#">About</a>
-          </li>
-          <li>
-            <a href="#">Services</a>
-          </li>
-          <li>
-            <a href="#">Contact</a>
-          </li>
         </ul>
       </div>
     </div>
@@ -63,129 +54,97 @@
     <div class="row">
 
       <div class="col-md-3">
-        <p class="lead">Shop Name</p>
+        <p class="lead">Навигация</p>
         <div class="list-group">
-          <a href="#"
-             class="list-group-item active">Category 1</a>
-          <a href="#"
-             class="list-group-item">Category 2</a>
-          <a href="#"
-             class="list-group-item">Category 3</a>
+          <a href="#introduction"
+             class="list-group-item active">Какво е JWT?</a>
+          <a href="#structure"
+             class="list-group-item">Структура</a>
+          <a href="#usage"
+             class="list-group-item">Как се използва?</a>
         </div>
       </div>
 
       <div class="col-md-9">
-
-        <div class="thumbnail">
-          <img class="img-responsive"
-               src="http://placehold.it/800x300"
-               alt="">
+        <div class="thumbnail"
+             id="introduction">
           <div class="caption-full">
-            <h4 class="pull-right">$24.99</h4>
-            <h4>
-              <a href="#">Product Name</a>
-            </h4>
-            <p>See more snippets like these online store reviews at
-              <a target="_blank"
-                 href="http://bootsnipp.com">Bootsnipp - http://bootsnipp.com</a>.</p>
-            <p>Want to make these reviews work? Check out
-              <strong>
-                <a href="http://maxoffsky.com/code-blog/laravel-shop-tutorial-1-building-a-review-system/">this building a review system tutorial</a>
-              </strong>over at maxoffsky.com!</p>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</p>
-          </div>
-          <div class="ratings">
-            <p class="pull-right">3 reviews</p>
+            <h3>
+              Какво е JWT?
+            </h3>
+
+            <p>JSON Web Token (JWT) is a compact, URL-safe means of representing claims to be transferred between two parties.
+              The claims in a JWT are encoded as a JSON object that is used as the payload of a JSON Web Signature (JWS)
+              structure or as the plaintext of a JSON Web Encryption (JWE) structure, enabling the claims to be digitally
+              signed or integrity protected with a Message Authentication Code (MAC) and/or encrypted.
+            </p>
+
             <p>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star-empty"></span>
-              4.0 stars
+              <strong> JWT работи с различни програмни езици:</strong> .NET, Python, Node.js, Java, PHP, Ruby, Go, JavaScript, и Haskell.
+              Вижда се, че може да бъде използван в много различни сценарии.
+            </p>
+
+            <p>
+              <strong> JWT е самостоятелен:</strong> Всичката нужна информация се съдържа в него. Това означава, че един JWT е способен
+              да пренася основна информация за себе си, товар (обикновено информация за потребителя) и подпис.
+            </p>
+
+            <p>
+              <strong> JWTs се предават по мрежата лесно:</strong> След като JWT е самостоятелен и всичката информация се съдържа
+              в него, те могат лесно да се използват в HTTP header, когато се аутентикира API. Също така могат да се предават
+              и през URL-а на страницата.
             </p>
           </div>
         </div>
 
-        <div class="well">
+        <div class="thumbnail"
+             id="structure">
+          <div class="caption-full">
+            <h3>
+              Структура
+            </h3>
 
-          <div class="text-right">
-            <a class="btn btn-success">Leave a Review</a>
+            <p>
+              Всеки JSON Web Token съдържа три елемента: - header - payload - signature
+            </p>
+
+            <img src="img/structure.png"
+                 alt="structure">
           </div>
+        </div>
 
-          <hr>
+        <div class="thumbnail"
+             id="structure">
+          <div class="caption-full">
+            <h3>
+              Как се използва?
+            </h3>
 
-          <div class="row">
-            <div class="col-md-12">
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star-empty"></span>
-              Anonymous
-              <span class="pull-right">10 days ago</span>
-              <p>This product was great in terms of quality. I would definitely buy another!</p>
-            </div>
+            <p>
+
+            </p>
           </div>
-
-          <hr>
-
-          <div class="row">
-            <div class="col-md-12">
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star-empty"></span>
-              Anonymous
-              <span class="pull-right">12 days ago</span>
-              <p>I've alredy ordered another one!</p>
-            </div>
-          </div>
-
-          <hr>
-
-          <div class="row">
-            <div class="col-md-12">
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star"></span>
-              <span class="glyphicon glyphicon-star-empty"></span>
-              Anonymous
-              <span class="pull-right">15 days ago</span>
-              <p>I've seen some better than this, but not at this price. I definitely recommend this item.</p>
-            </div>
-          </div>
-
         </div>
 
       </div>
 
     </div>
 
-  </div>
-
-  <div class="container">
-
-    <hr>
-
-    <footer>
-      <div class="row">
-        <div class="col-lg-12">
-          <p>Copyright &copy; Your Website 2014</p>
+    <div class="container">
+      <hr>
+      <footer>
+        <div class="row">
+          <div class="col-lg-12">
+            <!-- <p>Иван Младенов, ф.н 61950, СИ</p> -->
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
 
-  </div>
+    </div>
 
-  <script src="javascript/jquery.min.js"></script>
+    <script src="javascript/jquery.min.js"></script>
 
-  <script src="javascript/bootstrap.min.js"></script>
+    <script src="javascript/bootstrap.min.js"></script>
 
 </body>
 
