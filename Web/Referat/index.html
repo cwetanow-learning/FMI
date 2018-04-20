@@ -38,6 +38,10 @@
              class="list-group-item">Структура</a>
           <a href="#usage"
              class="list-group-item">Как се използва?</a>
+          <a href="#data-protection"
+             class="list-group-item">Защита на данни</a>
+          <a href="#verification"
+             class="list-group-item">Верифициране на JWT</a>
         </div>
       </div>
 
@@ -176,27 +180,90 @@ HMACSHA256(encodedString, 'secret'); </pre> The secret is the signature held by 
 
                 <img src="img/structure.png"
                      alt="structure"
-                     id="jwt-structure">
+                     id="image">
               </p>
             </div>
           </div>
         </div>
 
         <div class="thumbnail"
-             id="structure">
+             id="usage">
           <div class="caption-full">
             <h3>
               Как се използва?
             </h3>
 
             <p>
+              To show how and why JWT are actually used, we will use a simple 3 entity example (see the below diagram). The entities in
+              this example are the user, the application server, and the authentication server. The authentication server
+              will provide the JWT to the user. With the JWT, the user can then safely communicate with the application.
+            </p>
 
+            <img src="img/usage.png"
+                 alt="structure"
+                 id="image">
+            <p>
+              In this example, the user first signs into the authentication server using the authentication server’s login system (e.g.
+              username and password, Facebook login, Google login, etc). The authentication server then creates the JWT and
+              sends it to the user. When the user makes API calls to the application, the user passes the JWT along with
+              the API call. In this setup, the application server would be configured to verify that the incoming JWT are
+              created by the authentication server (the verification process will be explained in more detail later). So,
+              when the user makes API calls with the attached JWT, the application can use the JWT to verify that the API
+              call is coming from an authenticated user.
+            </p>
+          </div>
+        </div>
+
+        <div class="thumbnail"
+             id="data-protection">
+          <div class="caption-full">
+            <h3>
+              Защита на данни
+            </h3>
+
+            <p>
+              It is important to understand that the purpose of using JWT is NOT to hide or obscure data in any way. The reason why JWT
+              are used is to prove that the sent data was actually created by an authentic source.
+            </p>
+            <p>
+              As demonstrated in the previous steps, the data inside a JWT is encoded and signed, not encrypted. The purpose of encoding
+              data is to transform the data’s structure. Signing data allows the data receiver to verify the authenticity
+              of the source of the data. So encoding and signing data does NOT secure the data. On the other hand, the main
+              purpose of encryption is to secure the data and to prevent unauthorized access. For a more detailed explanation
+              of the differences between encoding and encryption, and also for more information on how hashing works, see
+              this article.
+            </p>
+            <h4>
+              <strong>
+                Since JWT are signed and encoded only, and since JWT are not encrypted, JWT do not guarantee any security for sensitive data.
+              </strong>
+            </h4>
+          </div>
+        </div>
+
+        <div class="thumbnail"
+             id="verification">
+          <div class="caption-full">
+            <h3>
+              Верифициране на JWT
+            </h3>
+
+            <p>
+              In our simple 3 entity example, we are using a JWT that is signed by the HS256 algorithm where only the authentication server
+              and the application server know the secret key. The application server receives the secret key from the authentication
+              server when the application sets up its authentication process. Since the application knows the secret key,
+              when the user makes a JWT-attached API call to the application, the application can perform the same signature
+              algorithm as in Step 3 on the JWT. The application can then verify that the signature obtained from it’s own
+              hashing operation matches the signature on the JWT itself (i.e. it matches the JWT signature created by the
+              authentication server). If the signatures match, then that means the JWT is valid which indicates that the
+              API call is coming from an authentic source. Otherwise, if the signatures don’t match, then it means that the
+              received JWT is invalid, which may be an indicator of a potential attack on the application. So by verifying
+              the JWT, the application adds a layer of trust between itself and the user.
             </p>
           </div>
         </div>
 
       </div>
-
     </div>
 
     <div class="container">
@@ -210,10 +277,11 @@ HMACSHA256(encodedString, 'secret'); </pre> The secret is the signature held by 
       </footer>
 
     </div>
+  </div>
+  <script src="javascript/jquery.min.js"></script>
 
-    <script src="javascript/jquery.min.js"></script>
+  <script src="javascript/bootstrap.min.js"></script>
 
-    <script src="javascript/bootstrap.min.js"></script>
 
 </body>
 
