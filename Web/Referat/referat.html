@@ -163,7 +163,7 @@
 
             <pre>var encodedString = base64UrlEncode(header) + "." + base64UrlEncode(payload);
                   
-HMACSHA256(encodedString, 'secret'); </pre>
+HMACSHA256(encodedString, 'secret'); // gV0zIGm6ND8aDaBA45i7NEFfg7xJ-eYvDu4LYYieaNM </pre>
             <h6 class="text-center">Пример 3 - подпис на JWT</h6>
             Тайният ключ (secret) се пази от сървъра. С него нашето приложение ще може да верифицира съществуващи JWT, както и да подписва
             нови.
@@ -185,6 +185,9 @@ HMACSHA256(encodedString, 'secret'); </pre>
                 Самият JWT се получава при събиране на трите низа и добавяне на точки между тях.
               </li>
             </ul>
+
+            <pre>// JWT Token
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZhYi1jZWYzOTA0NjYwYmQifQ.-xN_h82PHVTCMA9vdoHrcZxH-x5mb11y1537t3rGzcM</pre>
             <br>
             <img src="img/structure.png"
                  alt="structure"
