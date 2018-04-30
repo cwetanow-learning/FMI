@@ -9,7 +9,7 @@ $(document).ready(function () {
         var targetOffset = $target.offset().top - 50;
         $('html,body')
           .animate({ scrollTop: targetOffset }, 1000);
-        return false;
+        return true;
       }
     }
   });
