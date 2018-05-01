@@ -28,19 +28,36 @@
   <div id="sidebar-wrapper">
     <p class="lead">JSON Web Token</p>
     <ul class="list-group sidebar-nav">
-      <li> <a href="#introduction"
-           class="list-group-item navigation-btn active">Какво е JWT?</a></li>
-      <li> <a href="#structure"
-           class="list-group-item navigation-btn">Структура</a></li>
-      <li> <a href="#usage"
-           class="list-group-item navigation-btn">Как се използва?</a></li>
-      <li> <a href="#data-protection"
-           class="list-group-item navigation-btn">Защита на данни</a></li>
-      <li> <a href="#verification"
-           class="list-group-item navigation-btn">Верифициране на JWT</a></li>
-      <li> <a href="#jws"
-           class="list-group-item navigation-btn">JSON Web Signature</a></li>
-      <li> <a href="#jwe"
+      <li>
+        <a href="#introduction"
+           class="list-group-item navigation-btn active">Какво е JWT?</a>
+      </li>
+      <li>
+        <a href="#structure"
+           class="list-group-item navigation-btn">Структура</a>
+      </li>
+      <li>
+        <a href="#usage"
+           class="list-group-item navigation-btn">Как се използва?</a>
+      </li>
+      <li>
+        <a href="#data-protection"
+           class="list-group-item navigation-btn">Защита на данни</a>
+      </li>
+      <li>
+        <a href="#verification"
+           class="list-group-item navigation-btn">Верифициране на JWT</a>
+      </li>
+      <li>
+        <a href="#comparison"
+           class="list-group-item navigation-btn">Сравнение с други начини за аутентикация</a>
+      </li>
+      <li>
+        <a href="#jws"
+           class="list-group-item navigation-btn">JSON Web Signature</a>
+      </li>
+      <li>
+        <a href="#jwe"
            class="list-group-item navigation-btn">JSON Web Encryption</a>
       </li>
       <li>
@@ -48,7 +65,6 @@
            class="list-group-item navigation-btn">JSON Web Algorithms</a>
       </li>
     </ul>
-    </nav>
   </div>
   <div class="container page-content">
     <div class="thumbnail"
@@ -66,19 +82,19 @@
         </p>
 
         <p>
-          <strong> JWT работи с различни програмни езици:</strong> .NET, Python, Node.js, Java, PHP, Ruby, Go, JavaScript,
-          и Haskell. Вижда се, че може да бъде използван в много различни сценарии.
+          <strong> JWT работи с различни програмни езици:</strong> .NET, Python, Node.js, Java, PHP, Ruby, Go, JavaScript, и Haskell.
+          Вижда се, че може да бъде използван в много различни сценарии.
         </p>
 
         <p>
-          <strong> JWT е самостоятелен:</strong> Всичката нужна информация се съдържа в него. Това означава, че един JWT
-          е способен да пренася основна информация за себе си, товар (обикновено информация за потребителя) и подпис.
+          <strong> JWT е самостоятелен:</strong> Всичката нужна информация се съдържа в него. Това означава, че един JWT е способен
+          да пренася основна информация за себе си, товар (обикновено информация за потребителя) и подпис.
         </p>
 
         <p>
-          <strong> JWTs се предават по мрежата лесно:</strong> След като JWT е самостоятелен и всичката информация се съдържа
-          в него, те могат лесно да се използват в HTTP header, когато се аутентикира API. Също така могат да се предават
-          и през URL-а на страницата.
+          <strong> JWTs се предават по мрежата лесно:</strong> След като JWT е самостоятелен и всичката информация се съдържа в него,
+          те могат лесно да се използват в HTTP header, когато се аутентикира API. Също така могат да се предават и през
+          URL-а на страницата.
         </p>
       </div>
     </div>
@@ -244,8 +260,8 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZ
         </p>
         <h4>
           <strong>
-                След като JSON Web Token е само подписан и кодиран, а не криптиран, не гарантира никаква защита на ценни данни.
-              </strong>
+            След като JSON Web Token е само подписан и кодиран, а не криптиран, не гарантира никаква защита на ценни данни.
+          </strong>
         </h4>
 
         <p>
@@ -269,6 +285,158 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZ
           значи JSON Web Token-а е невалиден и може да е знак, че има потенциална атака към приложението. Като валидира JWT,
           приложението добавя слой на доверие между себе си и потребителя.
         </p>
+      </div>
+    </div>
+
+    <div class="thumbnail"
+         id="comparison">
+      <div class="caption-full">
+        <h3>
+          Сравнение с други начини за аутентикация
+        </h3>
+
+        <p>
+          For an API to be a powerful extension of a product, it almost certainly needs authentication. By building API calls that
+          can read, write, and delete user data, you can magnify an app’s influence on its users’ lives. So, if authentication
+          is a given, the method is the real choice. The industry has finally learned not to share usernames and passwords,
+          but there’s still more to figure out.
+
+        </p>
+        <p>Below we’ll look at three popular authentication methods: API keys, OAuth access tokens, and JSON Web Tokens (JWT).
+          We’ll cover how each is used and why you might choose one over the others.
+        </p>
+
+        <section>
+          <h4>API Keys: Great for Developer Quickstart</h4>
+
+          <p>In the earliest days of modern web APIs, the API key was all we had. It likely remains as the most common identifier,
+            and is the first many developers consider when restricting or tracking API traffic. The best thing about an API
+            key is its simplicity. You merely log in to a service, find your API key (often in the settings screen), and
+            copy it to use in an application, test in the browser, or use with one of these API request tools. Along with
+            the simplicity, though, comes both security and user experience downsides to API keys.</p>
+
+          <img src="img/apikey.png"
+               alt="api key"
+               id="image">
+          <h6 class="text-center">Фигура 3 - API Key [4]</h6>
+
+          <p>Typically, an API key gives full access to every operation an API can perform, including writing new data or deleting
+            existing data. If you use the same API key in multiple apps, a broken app could destroy your users' data without
+            an easy way to stop just that one app. Some apps let users generate new API keys, or even have multiple API keys
+            with the option to revoke one that may have gone into the wrong hands. The ability to change an API key limits
+            the security downsides.
+          </p>
+          <p>
+            Many API keys are sent in the query string as part of the URL, which makes it easier to discover for someone who should not
+            have access to it. A better option is to put the API key in the Authorization header. In fact, that’s the proposed
+            standard: Authorization: Apikey 1234567890abcdef
+          </p>
+          <p>
+            Yet, in practice API keys show up in all sorts of places:
+          </p>
+          <ul>
+            <li> Authorization Header</li>
+            <li> Basic Auth</li>
+            <li> Body Data</li>
+            <li> Custom Header</li>
+            <li> Query String</li>
+          </ul>
+
+          <p> The user experience of API keys is something to consider, as well. API keys make sense when the users of an API
+            are only developers. However, as developers created tools for themselves, they started sharing them with others.
+            End users often find themselves fumbling through API documentation, registration, and settings just to find the
+            API key that a tool needs—often without even knowing what an API is.
+          </p>
+          <p>
+            In the same way that Zapier user data showed the poor user experience of static webhooks, moving out of a flow to find API
+            keys distract users from their desired purpose. Combine that with the security concerns and there are other much
+            better approaches to access user data with APIs.</p>
+        </section>
+        <section>
+          <h4>OAuth Tokens: Great for Accessing User Data</h4>
+
+          <p>OAuth is the answer to accessing user data with APIs. Unlike with API keys, OAuth does not require a user to go
+            spelunking through a developer portal. In fact, in the best cases, users simply click a button to allow an application
+            to access their accounts. OAuth, specifically OAuth 2.0, is a standard for the process that goes on behind the
+            scenes to ensure secure handling of these permissions.</p>
+
+          <img src="img/oauth.png"
+               alt="OAuth"
+               id="image">
+          <h6 class="text-center">Фигура 4 - OAuth [4]</h6>
+
+          <p>The previous versions of this spec, OAuth 1.0 and 1.0a, were much more complicated than OAuth 2.0. The biggest
+            change in the latest version is that it’s no longer required to sign each call with a keyed hash. The most common
+            implementations of OAuth use one or both of these tokens instead:
+          </p>
+          <ul>
+            <li>
+              <strong> access token:</strong> sent like an API key, it allows the application to access a user’s data; optionally,
+              access tokens can expire.</li>
+            <li>
+              <strong> refresh token:</strong> optionally part of an OAuth flow, refresh tokens retrieve a new access token if they
+              have expired.</li>
+          </ul>
+
+          <p>Similar to API keys, you may find OAuth access tokens all over the place: in query string, headers, and elsewhere.
+            Since an access token is like a special type of API key, the most likely place to put it is the authorization
+            header, like so:
+          </p>
+          <pre>Authorization: Bearer 1234567890abcdef</pre>
+          <p>
+            The access and refresh tokens should not be confused with the Client ID and Client Secret. Those values, which may look like
+            a similar random collection of characters, are used to negotiate access and refresh tokens.</p>
+
+          <p>Like an API key, anyone with an access token can potentially invoke harmful operations, such as deleting data.
+            However, OAuth provides several improvements over API keys. For starters, access tokens can be tied to particular
+            scopes, which restrict the types of operations and data the application can access. Also, combined with refresh
+            tokens, access tokens will expire, so the negative effects could have a limited impact. Finally, even if refresh
+            tokens aren’t used, access tokens can still be revoked.</p>
+
+          <h4>JWT Tokens: Great for Limiting Database Lookups</h4>
+
+          <p>Whereas API keys and OAuth tokens are always used to access APIs, JSON Web Tokens (JWT) can be used in many different
+            scenarios. In fact, JWT can store any type of data, which is where it excels in combination with OAuth. With
+            a JWT access token, far fewer database lookups are needed while still not compromising security.</p>
+
+          <p>While a JWT is longer than most access tokens, they’re still relatively compact (though this depends on how much
+            data you store within them):</p>
+          <pre>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob21lcGFnZSI6Imh0dHBzOi8vemFwaWVyLmNvbSIsInRhZ2xpbmUiOiJaYXBpZXIgbWFrZXMgeW91IGhhcHBpZXIiLCJmb3JtIjoiaHR0cHM6Ly96YXBpZXIudHlwZWZvcm0uY29tL3RvL0hkRVk0eiJ9.E3EtYy2y7BRn4eS0RIyDAAh-KAsa6dVV91ULbBJCRJw</pre>
+          <p>You’re able to avoid database lookups because the JWT contains a base64 encoded version of the data you need to
+            determine the identity and scope of access. The JWT also contains a signature calculated using the JWT data.
+            Using the same secret you used to produce the JWT, you calculate your own version of the signature and compare.
+            This calculation is much more efficient than looking up an access token in a database to determine who it belongs
+            to and whether it is valid.</p>
+          <p>Like OAuth access tokens, JWT tokens should be passed in the Authorization header:</p>
+          <pre>Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob21lcGFnZSI6Imh0dHBzOi8vemFwaWVyLmNvbSIsInRhZ2xpbmUiOiJaYXBpZXIgbWFrZXMgeW91IGhhcHBpZXIiLCJmb3JtIjoiaHR0cHM6Ly96YXBpZXIudHlwZWZvcm0uY29tL3RvL0hkRVk0eiJ9.E3EtYy2y7BRn4eS0RIyDAAh-KAsa6dVV91ULbBJCRJw</pre>
+          <p>The downside of not looking up access tokens with each call is that a JWT cannot be revoked. For that reason, you’ll
+            want to use JWT in combination with refresh tokens and JWT expiration. With each API call, you would need to
+            check the JWT signature and ensure that the expiration is still in the future.</p>
+        </section>
+
+        <h4>Which Should I Use?</h4>
+
+        <p></p>
+        <ul>
+          <li>
+            <strong>
+              Use API keys
+            </strong>if you expect developers to build internal applications that don’t need to access more than a single
+            user’s data.
+          </li>
+          <li>
+            <strong>
+              Use OAuth access tokens
+            </strong>if you want users to easily provide authorization to applications without needing to share private data
+            or dig through developer documentation.
+          </li>
+          <li>
+            <strong>
+              Use JWT
+            </strong>in concert with OAuth if you want to limit database lookups and you don’t require the ability to immediately
+            revoke access.
+          </li>
+        </ul>
       </div>
     </div>
 
@@ -393,25 +561,29 @@ eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOiJiMDhmODZhZi0zNWRhLTQ4ZjItOGZ
                    target="_blank">[3] - 5 Easy Steps to Understanding JSON Web Tokens (JWT)</a>
               </li>
               <li class="list-group-item">
+                <a href="https://zapier.com/engineering/apikey-oauth-jwt/"
+                   target="_blank">[4] - API Keys vs OAuth Tokens vs JSON Web Tokens</a>
+              </li>
+              <li class="list-group-item">
                 <a href="https://tools.ietf.org/html/rfc7515"
-                   target="_blank">[4] - JSON Web Signature (JWS)</a>
+                   target="_blank">[5] - JSON Web Signature (JWS)</a>
               </li>
               <li class="list-group-item">
                 <a href="https://stackoverflow.com/questions/27640930/what-is-the-difference-between-json-web-signature-jws-and-json-web-token-jwt"
               
-                   target="_blank">[5] - What is the difference between JSON Web Signature (JWS) and JSON Web Token (JWT)?</a>
+                   target="_blank">[6] - What is the difference between JSON Web Signature (JWS) and JSON Web Token (JWT)?</a>
               </li>
               <li class="list-group-item">
                 <a href="https://tools.ietf.org/html/rfc7516"
-                   target="_blank">[6] - JSON Web Encryption (JWE)</a>
+                   target="_blank">[7] - JSON Web Encryption (JWE)</a>
               </li>
               <li class="list-group-item">
                 <a href="https://tools.ietf.org/html/rfc7518#section-1"
-                   target="_blank">[7] - JSON Web Algorithms (JWA)</a>
+                   target="_blank">[8] - JSON Web Algorithms (JWA)</a>
               </li>
               <li class="list-group-item">
                 <a href="https://auth0.com/blog/json-web-token-signing-algorithms-overview/"
-                   target="_blank">[8] - JSON Web Token (JWT) Signing Algorithms Overview</a>
+                   target="_blank">[9] - JSON Web Token (JWT) Signing Algorithms Overview</a>
               </li>
             </ul>
           </div>
