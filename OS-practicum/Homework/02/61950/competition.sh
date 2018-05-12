@@ -1,6 +1,12 @@
 #!/bin/bash
 
 directory=$1
+
+if [ ! -d "$directory" ]; then
+  echo "Directory does not exist"
+  exit 1
+fi
+
 function=$2
 
 participants=$(ls -l $directory | tail -n +2 | rev | cut -d ' ' -f1 | rev)
@@ -31,6 +37,9 @@ then
   do
     echo $false_communication
   done
+else
+  echo "Invalid function"
+  exit 1
 fi
 
 #b
