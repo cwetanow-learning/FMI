@@ -11,7 +11,6 @@ function=$2
 
 participants=$(ls -l $directory | tail -n +2 | rev | cut -d ' ' -f1 | rev)
 
-#a
 if [ $function = "participants" ]; 
 then
   for participant in $participants;
@@ -38,11 +37,9 @@ then
   do
     echo $false_communication
   done
-#c
 elif [ $function = "unique" ];
 then
   echo "Not implemented"
-#d
 elif [ $function = "cross_check" ];
 then
   for participant in $participants;
