@@ -39,7 +39,27 @@ then
   done
 elif [ $function = "unique" ];
 then
-  echo "Not implemented"
+  declare -A logs
+
+  for participant in $participants;
+  do
+    codes=$(cat $directory/$participant | egrep "QSO" | sed "s/  \+/ /g" | cut -d " " -f 9)
+
+    for code in $codes;
+    do
+      if [ ! ${logs[$code]+abc} ]; then
+        logs[$code]=1
+      else
+        logs[$code]=$(( logs[$code] + 1 ))
+      fi
+    done
+  done
+
+  for code in "${!logs[@]}"; do 
+    if [ ${logs[$code]} -lt 4 ]; then
+      echo $code
+    fi  
+  done
 elif [ $function = "cross_check" ];
 then
   for participant in $participants;
@@ -59,5 +79,3 @@ else
   echo "Invalid function"
   exit 1
 fi
-
-#b
