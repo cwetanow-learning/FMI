@@ -33,9 +33,30 @@ then
     fi
     done
   done
+  
   for false_communication in $communications;
   do
     echo $false_communication
+  done
+#c
+elif [ $function = "unique" ];
+then
+  echo "Not implemented"
+#d
+elif [ $function = "cross_check" ];
+then
+  for participant in $participants;
+  do
+    codes=$(cat $directory/$participant | egrep "QSO" | sed "s/  \+/ /g" | cut -d " " -f 9)
+
+    for code in $codes;
+    do
+      if [ -f "$directory/$code" ]; then
+        if ! grep -q $participant "$directory/$code"; then
+          cat $directory/$participant | egrep $code    
+        fi
+      fi
+    done
   done
 else
   echo "Invalid function"
