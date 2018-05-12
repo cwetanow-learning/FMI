@@ -12,5 +12,25 @@ then
   do
     echo $participant
   done
+elif [ $function = "outliers" ];
+then
+  communications=""
+  for participant in $participants;
+  do
+    codes=$(cat $directory/$participant | egrep "QSO" | sed "s/  \+/ /g" | cut -d " " -f 9)
+    for code in $codes;
+    do
+    if [ ! -f "$directory/$code" ]; then
+      if [[ ! $communications = *" $code "* ]]; then
+        communications=$communications' '$code
+      fi
+    fi
+    done
+  done
+  for false_communication in $communications;
+  do
+    echo $false_communication
+  done
 fi
 
+#b
