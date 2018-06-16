@@ -2,10 +2,6 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <string.h>
-#include <stdio.h>
-#include <sys/types.h>
-
-#include <ctype.h>
 
 #define READ 0
 #define WRITE 1
@@ -86,7 +82,6 @@ int main(int argc, char **argv)
       {
         execute(input);
 
-        currentExecutingTasks--;
         exit(0);
       }
       else
