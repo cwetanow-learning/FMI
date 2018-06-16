@@ -10,62 +10,14 @@
 #define READ 0
 #define WRITE 1
 
-char *skipSpace(char *str)
-{
-  while (*str == ' ')
-  {
-    ++str;
-  }
-
-  return str;
-}
-
-char *goToNextSpace(char *str)
-{
-  while (*str != ' ')
-  {
-    ++str;
-  }
-
-  return str;
-}
-
-void executeSimpleCommand(char **args)
-{
-  printf("%s\n", args[0]);
-  execvp(args[0], args);
-}
-
 void execute(char *line)
 {
-
   system(line);
-  // char *args[512];
-  // int index = 1;
-  // char *next = goToNextSpace(line);
 
-  // while (next != NULL)
-  // {
-  //   line = skipSpace(line);
-  //   next[0] = '\0';
-  //   args[index] = line;
-  //   line = skipSpace(next + 1);
-
-  //   ++index;
-  // }
-
-  // if (line[0] != '\0')
-  // {
-  //   args[index] = line;
-  //   ++index;
-  // }
-
-  // args[index] = NULL;
-  // printf("%s 12 \n", args[0]);
-  // printf("12");
-
-  // executeSimpleCommand(args);
+  // Should be with exec(), pipe() and dup2()...
 }
+
+int isDone = 0;
 
 char *getInput()
 {
@@ -88,37 +40,50 @@ char *getInput()
   }
 
   input[i] = '\0';
+  isDone = 1;
 
   return result;
 }
 
-// int main(int argc, char **argv)
-int main()
+int getMaxParallel(char *input)
 {
-  // if (argc < 2)
-  // {
-  //   write(2, "Invalid parameters\n", 20);
-  //   exit(1);
-  // }
+  int result = 0;
 
-  int tasks = 4;
-  int maxParallel = 2;
+  int length = strlen(input);
+  int counter = 1;
+
+  for (int i = length - 1; i > -1; i--)
+  {
+    result += ((int)input[i] - 48) * counter;
+    counter *= 10;
+  }
+
+  return result;
+}
+
+int main(int argc, char **argv)
+{
+  if (argc < 2)
+  {
+    write(2, "Invalid parameters\n", 20);
+    exit(1);
+  }
+
+  int maxParallel = getMaxParallel(argv[1]);
 
   int currentExecutingTasks = 0;
-  int current = 0;
   int status = 0;
 
-  int pid2[tasks];
-
-  while (current < tasks)
+  while (!isDone)
   {
     if (currentExecutingTasks < maxParallel)
     {
-      pid2[current] = fork();
+      char *input = getInput();
 
-      if (pid2[current] == 0)
+      int pid = fork();
+
+      if (pid == 0)
       {
-        char *input = getInput();
         execute(input);
 
         currentExecutingTasks--;
@@ -127,7 +92,6 @@ int main()
       else
       {
         currentExecutingTasks++;
-        current++;
       }
     }
     else
