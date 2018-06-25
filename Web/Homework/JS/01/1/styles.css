@@ -1,0 +1,9 @@
+.container {
+  margin-top: 100px;
+}
+
+#username-error,
+#password-error,
+#confirm-password-error{
+  display: none;
+}

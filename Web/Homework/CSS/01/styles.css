@@ -1,0 +1,35 @@
+.container {
+  width: 40%;
+  margin-left: 30%;
+  margin-right: 30%;
+  margin-top: 200px;
+  border: 1px solid black;
+}
+
+form {
+  padding: 20px;
+  background-color: #F5F5F0;
+}
+
+.header {
+  color: white;
+  background-color: #97BF0D;
+  margin: 0;
+  text-align: center;
+  padding: 10px;
+  height: 20px;
+}
+
+.register-button {
+  color:white;
+  background-color: #97BF0D;
+  width: 100%;
+  border: none;
+  padding: 8px;
+}
+
+.input {
+  width: 99%;
+  margin-bottom: 15px;
+  padding: 6px;
+}
