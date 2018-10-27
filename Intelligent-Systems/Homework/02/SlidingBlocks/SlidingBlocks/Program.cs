@@ -61,5 +61,42 @@ namespace SlidingBlocks
 					.ToArray();
 			}
 		}
+
+		public static int GetHeuristic(int[][] blocks, int size)
+		{
+			var result = 0;
+			var number = 1;
+
+			for (int i = 0; i < size; i++)
+			{
+				for (int j = 0; j < size; j++)
+				{
+					var current = blocks[i][j];
+
+					if (current != number && current != 0)
+					{
+						var solutionRow = current / size;
+						var solutionCol = current % size - 1;
+
+						if (current % size == 0)
+						{
+							solutionRow--;
+							solutionCol = size - 1;
+						}
+
+						var distance = Math.Abs(i - solutionRow) + Math.Abs(j - solutionCol);
+
+						if (distance > 0)
+						{
+							result += distance;
+						}
+					}
+
+					number++;
+				}
+			}
+
+			return result;
+		}
 	}
 }
