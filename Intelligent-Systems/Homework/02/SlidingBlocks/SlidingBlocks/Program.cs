@@ -62,6 +62,93 @@ namespace SlidingBlocks
 			}
 		}
 
+		public static IEnumerable<Node> GetChildren(Node node, int size)
+		{
+			var children = new List<Node>();
+
+			if (node.EmptyRow > 0 && node.Direction != Direction.Up)
+			{
+				var copy = node.Matrix.Select(x => x.ToArray()).ToArray();
+
+				var temp = copy[node.EmptyRow][node.EmptyCol];
+				copy[node.EmptyRow][node.EmptyCol] = copy[node.EmptyRow - 1][node.EmptyCol];
+				copy[node.EmptyRow - 1][node.EmptyCol] = temp;
+
+				var heuristic = GetHeuristic(copy, size);
+
+				var newNode = new Node(heuristic, node.G + 1, copy) {
+					Parent = node,
+					EmptyCol = node.EmptyCol,
+					EmptyRow = node.EmptyRow - 1,
+					Direction = Direction.Down
+				};
+
+				children.Add(newNode);
+			}
+
+			if (node.EmptyRow < size - 1 && node.Direction != Direction.Down)
+			{
+				var copy = node.Matrix.Select(x => x.ToArray()).ToArray();
+
+				var temp = copy[node.EmptyRow][node.EmptyCol];
+				copy[node.EmptyRow][node.EmptyCol] = copy[node.EmptyRow + 1][node.EmptyCol];
+				copy[node.EmptyRow + 1][node.EmptyCol] = temp;
+
+				var heuristic = GetHeuristic(copy, size);
+
+				var newNode = new Node(heuristic, node.G + 1, copy) {
+					Parent = node,
+					EmptyCol = node.EmptyCol,
+					EmptyRow = node.EmptyRow + 1,
+					Direction = Direction.Up
+				};
+
+				children.Add(newNode);
+			}
+
+			if (node.EmptyCol > 0 && node.Direction != Direction.Left)
+			{
+				var copy = node.Matrix.Select(x => x.ToArray()).ToArray();
+
+				var temp = copy[node.EmptyRow][node.EmptyCol];
+				copy[node.EmptyRow][node.EmptyCol] = copy[node.EmptyRow][node.EmptyCol - 1];
+				copy[node.EmptyRow][node.EmptyCol - 1] = temp;
+
+				var heuristic = GetHeuristic(copy, size);
+
+				var newNode = new Node(heuristic, node.G + 1, copy) {
+					Parent = node,
+					EmptyCol = node.EmptyCol - 1,
+					EmptyRow = node.EmptyRow,
+					Direction = Direction.Right
+				};
+
+				children.Add(newNode);
+			}
+
+			if (node.EmptyCol < size - 1 && node.Direction != Direction.Right)
+			{
+				var copy = node.Matrix.Select(x => x.ToArray()).ToArray();
+
+				var temp = copy[node.EmptyRow][node.EmptyCol];
+				copy[node.EmptyRow][node.EmptyCol] = copy[node.EmptyRow][node.EmptyCol + 1];
+				copy[node.EmptyRow][node.EmptyCol + 1] = temp;
+
+				var heuristic = GetHeuristic(copy, size);
+
+				var newNode = new Node(heuristic, node.G + 1, copy) {
+					Parent = node,
+					EmptyCol = node.EmptyCol + 1,
+					EmptyRow = node.EmptyRow,
+					Direction = Direction.Left
+				};
+
+				children.Add(newNode);
+			}
+
+			return children;
+		}
+
 		public static int GetHeuristic(int[][] blocks, int size)
 		{
 			var result = 0;
