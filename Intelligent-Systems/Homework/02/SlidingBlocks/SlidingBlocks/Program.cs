@@ -82,6 +82,21 @@ namespace SlidingBlocks
 			}
 
 			var solution = Solve(root, size);
+
+			if (solution != null)
+			{
+				Console.WriteLine(solution.G);
+
+				var directions = new List<string>();
+				while (solution.Parent != null)
+				{
+					directions.Add(solution.Direction.ToString().ToLower());
+
+					solution = solution.Parent;
+				}
+
+				Console.WriteLine(string.Join(Environment.NewLine, directions));
+			}
 		}
 
 		public static Node Solve(Node root, int size)
