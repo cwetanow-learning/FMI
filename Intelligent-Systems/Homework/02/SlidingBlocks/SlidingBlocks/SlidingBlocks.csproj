@@ -6,4 +6,7 @@
     <RootNamespace>SlidingBlocks</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Huitian.PowerCollections" Version="1.0.0" />
+  </ItemGroup>
 </Project>
