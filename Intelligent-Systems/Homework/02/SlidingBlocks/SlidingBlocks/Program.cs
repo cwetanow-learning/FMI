@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Wintellect.PowerCollections;
 
 namespace SlidingBlocks
 {
@@ -51,15 +52,62 @@ namespace SlidingBlocks
 
 			var size = (int)Math.Sqrt(n + 1);
 
-			var matrix = new int[size][];
+			var blocks = new int[size][];
 
 			for (int i = 0; i < size; i++)
 			{
-				matrix[i] = Console.ReadLine()
+				blocks[i] = Console.ReadLine()
 					.Split(' ')
 					.Select(int.Parse)
 					.ToArray();
 			}
+
+			var heuristic = GetHeuristic(blocks, size);
+
+			var root = new Node(heuristic, 0, blocks) {
+				Direction = Direction.Root
+			};
+
+			for (int i = 0; i < size; i++)
+			{
+				for (int j = 0; j < size; j++)
+				{
+					if (blocks[i][j] == 0)
+					{
+						root.EmptyCol = j;
+						root.EmptyRow = i;
+						break;
+					}
+				}
+			}
+
+			var solution = Solve(root, size);
+		}
+
+		public static Node Solve(Node root, int size)
+		{
+			var bag = new OrderedBag<Node> {
+				root
+			};
+
+			while (bag.Count > 0)
+			{
+				var current = bag.RemoveFirst();
+
+				if (current.H == 0)
+				{
+					return current;
+				}
+
+				var children = GetChildren(current, size);
+
+				foreach (var child in children)
+				{
+					bag.Add(child);
+				}
+			}
+
+			return null;
 		}
 
 		public static IEnumerable<Node> GetChildren(Node node, int size)
