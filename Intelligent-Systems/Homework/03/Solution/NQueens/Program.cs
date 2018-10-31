@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NQueens
@@ -11,10 +12,13 @@ namespace NQueens
 
 		public static void Main(string[] args)
 		{
-			var n = 4;
+			var n = int.Parse(Console.ReadLine());
+			var sw = Stopwatch.StartNew();
 
 			var result = Restart(n);
+			sw.Stop();
 
+			Console.WriteLine(sw.ElapsedMilliseconds);
 			Console.WriteLine(string.Join(' ', result));
 		}
 
@@ -32,10 +36,6 @@ namespace NQueens
 		{
 			var (queens, hitsMatrix) = Initialize(n);
 
-			PrintMatrix(hitsMatrix, n);
-			Console.WriteLine(string.Join(' ', queens.Select((q, i) => $"{q} {i};")));
-
-			throw new Exception();
 			return Solve(queens, hitsMatrix, 0);
 		}
 
@@ -52,20 +52,23 @@ namespace NQueens
 
 			for (int i = 0; i < n; i++)
 			{
-				var nextQueen = random.Next(0, n);
+				//var nextQueen = random.Next(0, n);
 
-				while (queens[nextQueen] >= 0)
-				{
-					nextQueen = random.Next(0, n);
-				}
+				//while (queens[nextQueen] >= 0)
+				//{
+				//	nextQueen = random.Next(0, n);
+				//}
 
-				var moves = GetBestMoveForRow(queens, hitsMatrix, nextQueen);
+				var moves = GetBestMoveForRow(queens, hitsMatrix, i);
 
 				var nextMoveIndex = random.Next(0, moves.Count);
 
 				var nextCol = moves[nextMoveIndex];
 
-				(queens, hitsMatrix) = MakeMove(nextQueen, queens[nextQueen], nextCol, queens, hitsMatrix);
+				(queens, hitsMatrix) = MakeMove(i, nextCol, queens, hitsMatrix);
+
+				//Console.WriteLine($"{i} {queens[i]}");
+				//PrintMatrix(hitsMatrix, n);
 			}
 
 			return (queens, hitsMatrix);
@@ -73,11 +76,13 @@ namespace NQueens
 
 		private static List<int> GetBestMoveForRow(int[] queens, int[][] hitsMatrix, int row)
 		{
-			var min = hitsMatrix[row].Min();
+			var matrixRow = hitsMatrix[row];
+			var min = matrixRow.Min();
 
-			var moves = hitsMatrix[row]
-				.Where(col => col == min && col != queens[row])
-				.Select((element, index) => index)
+			var moves = matrixRow
+				.Select((element, index) => new { element, index })
+				.Where(obj => obj.element == min && obj.element != queens[row])
+				.Select(obj => obj.index)
 				.ToList();
 
 			return moves;
@@ -118,11 +123,15 @@ namespace NQueens
 			return result;
 		}
 
-		private static (int[] queens, int[][] hitsMatrix) MakeMove(int row, int col, int nextCol, int[] queens, int[][] hitsMatrix)
+		private static (int[] queens, int[][] hitsMatrix) MakeMove(int row, int nextCol, int[] queens, int[][] hitsMatrix)
 		{
 			var n = queens.Length;
+			var col = queens[row];
 
 			queens[row] = nextCol;
+
+			//Console.WriteLine($"{row} {col} -> {queens[row]}");
+			//PrintMatrix(hitsMatrix, n);
 
 			// Update old position
 			if (col >= 0)
@@ -187,7 +196,7 @@ namespace NQueens
 		{
 			while (steps < MaxSteps)
 			{
-				PrintMatrix(hitsMatrix, queens.Length);
+				//PrintMatrix(hitsMatrix, queens.Length);
 
 				if (IsSolution(queens, hitsMatrix))
 				{
@@ -205,7 +214,7 @@ namespace NQueens
 
 				var (row, col, nextCol) = nextMoves[randomIndex];
 
-				MakeMove(row, col, nextCol, queens, hitsMatrix);
+				MakeMove(row, nextCol, queens, hitsMatrix);
 
 				steps++;
 			}
