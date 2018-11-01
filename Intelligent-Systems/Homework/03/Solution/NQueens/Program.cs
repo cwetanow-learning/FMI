@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 namespace NQueens
 {
@@ -30,6 +31,27 @@ namespace NQueens
 
 			Console.WriteLine($"N: {n}; Restarts: {restarts}; Time: {sw.ElapsedMilliseconds / (double)1000}s");
 			Console.WriteLine(string.Join(' ', queens));
+		}
+
+		public static void PrintSolution()
+		{
+			for (int i = 0; i < n; i++)
+			{
+				var builder = new StringBuilder();
+				for (int j = 0; j < n; j++)
+				{
+					var symbol = "_";
+
+					if (queens[i] == j)
+					{
+						symbol = "*";
+					}
+
+					builder.Append(symbol);
+				}
+
+				Console.WriteLine(builder.ToString());
+			}
 		}
 
 		public static void PrintMatrix()
