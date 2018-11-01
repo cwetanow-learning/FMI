@@ -84,13 +84,6 @@ namespace NQueens
 
 			for (int i = 0; i < n; i++)
 			{
-				//var nextQueen = random.Next(0, n);
-
-				//while (queens[nextQueen] >= 0)
-				//{
-				//	nextQueen = random.Next(0, n);
-				//}
-
 				var moves = GetBestMoveForRow(i);
 
 				var nextMoveIndex = random.Next(0, moves.Count);
