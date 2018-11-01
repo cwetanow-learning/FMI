@@ -7,7 +7,7 @@ namespace NQueens
 {
 	public class Program
 	{
-		private static int MaxSteps = 75;
+		private static readonly int MaxSteps = 75;
 		private static Random random = new Random();
 
 		public static int restarts = -1;
@@ -19,25 +19,17 @@ namespace NQueens
 
 		public static void Main(string[] args)
 		{
-			n = 4;
+			n = int.Parse(Console.ReadLine());
+
 			var sw = new Stopwatch();
-			for (int i = 0; i < 15; i++)
-			{
-				sw.Restart();
-				Restart();
-				Solve();
-				sw.Stop();
 
-				Console.WriteLine($"N: {n}; Restarts: {restarts}; Time: {sw.ElapsedMilliseconds}ms");
-				//Console.WriteLine(string.Join(' ', queens));
-				Console.WriteLine();
+			sw.Restart();
+			Restart();
+			Solve();
+			sw.Stop();
 
-				n *= 2;
-				restarts = -1;
-			}
-
-			//n = int.Parse(Console.ReadLine());
-
+			Console.WriteLine($"N: {n}; Restarts: {restarts}; Time: {sw.ElapsedMilliseconds / (double)1000}s");
+			Console.WriteLine(string.Join(' ', queens));
 		}
 
 		public static void PrintMatrix()
@@ -70,20 +62,20 @@ namespace NQueens
 
 			for (int i = 0; i < n; i++)
 			{
-				var nextQueen = random.Next(0, n);
+				//var nextQueen = random.Next(0, n);
 
-				while (queens[nextQueen] >= 0)
-				{
-					nextQueen = random.Next(0, n);
-				}
+				//while (queens[nextQueen] >= 0)
+				//{
+				//	nextQueen = random.Next(0, n);
+				//}
 
-				var moves = GetBestMoveForRow(nextQueen);
+				var moves = GetBestMoveForRow(i);
 
 				var nextMoveIndex = random.Next(0, moves.Count);
 
 				var nextCol = moves[nextMoveIndex];
 
-				MakeMove(nextQueen, nextCol);
+				MakeMove(i, nextCol);
 			}
 		}
 
@@ -92,9 +84,14 @@ namespace NQueens
 			var matrixRow = hitsMatrix[row];
 			var min = matrixRow.Min();
 
+			if (queens[row] > -1 && matrixRow[queens[row]] == min)
+			{
+				return new List<int>();
+			}
+
 			var moves = matrixRow
 				.Select((element, index) => new { element, index })
-				.Where(obj => obj.element == min && obj.element != queens[row])
+				.Where(obj => obj.element == min && obj.index != queens[row])
 				.Select(obj => obj.index)
 				.ToList();
 
@@ -139,9 +136,6 @@ namespace NQueens
 			var col = queens[row];
 
 			queens[row] = nextCol;
-
-			//Console.WriteLine($"{row} {col} -> {queens[row]}");
-			//PrintMatrix(hitsMatrix, n);
 
 			// Update old position
 			if (col >= 0)
@@ -211,7 +205,7 @@ namespace NQueens
 
 				var nextMoves = GetBestMoves();
 
-				if (!nextMoves.Any())
+				if (nextMoves.Count == 0)
 				{
 					Restart();
 					continue;
