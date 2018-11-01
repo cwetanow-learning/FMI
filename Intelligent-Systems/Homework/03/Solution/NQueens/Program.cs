@@ -7,22 +7,40 @@ namespace NQueens
 {
 	public class Program
 	{
-		private const int MaxSteps = 60;
+		private static int MaxSteps = 75;
 		private static Random random = new Random();
+
+		public static int restarts = -1;
+		public static int steps = 0;
+
+		public static int n;
+		public static int[][] hitsMatrix;
+		public static int[] queens;
 
 		public static void Main(string[] args)
 		{
-			var n = int.Parse(Console.ReadLine());
-			var sw = Stopwatch.StartNew();
+			n = 4;
+			var sw = new Stopwatch();
+			for (int i = 0; i < 15; i++)
+			{
+				sw.Restart();
+				Restart();
+				Solve();
+				sw.Stop();
 
-			var result = Restart(n);
-			sw.Stop();
+				Console.WriteLine($"N: {n}; Restarts: {restarts}; Time: {sw.ElapsedMilliseconds}ms");
+				//Console.WriteLine(string.Join(' ', queens));
+				Console.WriteLine();
 
-			Console.WriteLine(sw.ElapsedMilliseconds);
-			Console.WriteLine(string.Join(' ', result));
+				n *= 2;
+				restarts = -1;
+			}
+
+			//n = int.Parse(Console.ReadLine());
+
 		}
 
-		public static void PrintMatrix(int[][] hitsMatrix, int n)
+		public static void PrintMatrix()
 		{
 			for (int i = 0; i < n; i++)
 			{
@@ -32,17 +50,17 @@ namespace NQueens
 			Console.WriteLine();
 		}
 
-		public static int[] Restart(int n)
+		public static void Restart()
 		{
-			var (queens, hitsMatrix) = Initialize(n);
-
-			return Solve(queens, hitsMatrix, 0);
+			restarts++;
+			Initialize();
+			steps = 0;
 		}
 
-		public static (int[] queens, int[][] hitsMatrix) Initialize(int n)
+		public static void Initialize()
 		{
-			var queens = new int[n];
-			var hitsMatrix = new int[n][];
+			queens = new int[n];
+			hitsMatrix = new int[n][];
 
 			for (int i = 0; i < n; i++)
 			{
@@ -52,29 +70,24 @@ namespace NQueens
 
 			for (int i = 0; i < n; i++)
 			{
-				//var nextQueen = random.Next(0, n);
+				var nextQueen = random.Next(0, n);
 
-				//while (queens[nextQueen] >= 0)
-				//{
-				//	nextQueen = random.Next(0, n);
-				//}
+				while (queens[nextQueen] >= 0)
+				{
+					nextQueen = random.Next(0, n);
+				}
 
-				var moves = GetBestMoveForRow(queens, hitsMatrix, i);
+				var moves = GetBestMoveForRow(nextQueen);
 
 				var nextMoveIndex = random.Next(0, moves.Count);
 
 				var nextCol = moves[nextMoveIndex];
 
-				(queens, hitsMatrix) = MakeMove(i, nextCol, queens, hitsMatrix);
-
-				//Console.WriteLine($"{i} {queens[i]}");
-				//PrintMatrix(hitsMatrix, n);
+				MakeMove(nextQueen, nextCol);
 			}
-
-			return (queens, hitsMatrix);
 		}
 
-		private static List<int> GetBestMoveForRow(int[] queens, int[][] hitsMatrix, int row)
+		private static List<int> GetBestMoveForRow(int row)
 		{
 			var matrixRow = hitsMatrix[row];
 			var min = matrixRow.Min();
@@ -88,17 +101,15 @@ namespace NQueens
 			return moves;
 		}
 
-		private static List<(int row, int col, int nextCol)> GetBestMoves(int[] queens, int[][] hitsMatrix)
+		private static List<(int row, int col, int nextCol)> GetBestMoves()
 		{
 			var result = new List<(int row, int col, int nextCol)>();
-
-			var n = queens.Length;
 
 			var maxHitsChange = -1;
 
 			for (int i = 0; i < n; i++)
 			{
-				var rowBestMoves = GetBestMoveForRow(queens, hitsMatrix, i);
+				var rowBestMoves = GetBestMoveForRow(i);
 
 				if (rowBestMoves.Any())
 				{
@@ -123,9 +134,8 @@ namespace NQueens
 			return result;
 		}
 
-		private static (int[] queens, int[][] hitsMatrix) MakeMove(int row, int nextCol, int[] queens, int[][] hitsMatrix)
+		private static void MakeMove(int row, int nextCol)
 		{
-			var n = queens.Length;
 			var col = queens[row];
 
 			queens[row] = nextCol;
@@ -136,16 +146,14 @@ namespace NQueens
 			// Update old position
 			if (col >= 0)
 			{
-				UpdateMatrix(row, col, -1, hitsMatrix, n);
+				UpdateMatrix(row, col, -1);
 			}
 
 			// Update new position
-			UpdateMatrix(row, nextCol, 1, hitsMatrix, n);
-
-			return (queens, hitsMatrix);
+			UpdateMatrix(row, nextCol, 1);
 		}
 
-		public static void UpdateMatrix(int row, int col, int increment, int[][] hitsMatrix, int n)
+		public static void UpdateMatrix(int row, int col, int increment)
 		{
 			for (int i = 0; i < n; i++)
 			{
@@ -192,40 +200,40 @@ namespace NQueens
 			}
 		}
 
-		public static int[] Solve(int[] queens, int[][] hitsMatrix, int steps)
+		public static void Solve()
 		{
-			while (steps < MaxSteps)
+			while (true)
 			{
-				//PrintMatrix(hitsMatrix, queens.Length);
-
-				if (IsSolution(queens, hitsMatrix))
+				if (IsSolution())
 				{
-					return queens;
+					return;
 				}
 
-				var nextMoves = GetBestMoves(queens, hitsMatrix);
+				var nextMoves = GetBestMoves();
 
 				if (!nextMoves.Any())
 				{
-					return Restart(queens.Length);
+					Restart();
+					continue;
 				}
 
 				var randomIndex = random.Next(0, nextMoves.Count);
 
 				var (row, col, nextCol) = nextMoves[randomIndex];
 
-				MakeMove(row, nextCol, queens, hitsMatrix);
+				MakeMove(row, nextCol);
 
 				steps++;
-			}
 
-			return Restart(queens.Length);
+				if (steps > MaxSteps)
+				{
+					Restart();
+				}
+			}
 		}
 
-		private static bool IsSolution(int[] queens, int[][] hitsMatrix)
+		private static bool IsSolution()
 		{
-			var n = queens.Length;
-
 			for (int i = 0; i < n; i++)
 			{
 				var row = i;
