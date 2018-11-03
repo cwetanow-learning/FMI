@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,7 +8,7 @@ namespace NQueens
 {
 	public class Program
 	{
-		private static readonly int MaxSteps = 75;
+		private static readonly int MaxSteps = 150;
 		private static Random random = new Random();
 
 		public static int restarts = -1;
