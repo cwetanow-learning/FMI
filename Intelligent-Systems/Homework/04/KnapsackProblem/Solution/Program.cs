@@ -7,6 +7,22 @@ namespace Solution
 {
 	public class Program
 	{
+		public class Element
+		{
+			public Element()
+			{
+				this.Chromosomes = new bool[NumberOfItems];
+			}
+
+			public bool[] Chromosomes { get; set; }
+
+			public int Fitness { get; set; }
+
+			public int Weight { get; set; }
+
+			public string Representation { get; set; }
+		}
+
 		public static int NumberOfItems;
 		public static int MaximumWeight;
 		public static int SizeOfPopulation;
@@ -21,46 +37,55 @@ namespace Solution
 
 			var population = CreateInitialPopulation();
 
-			Evolution(population, SizeOfPopulation, 7, 30);
+			Evolution(population, SizeOfPopulation, 7, 100);
 		}
 
-		public static void Evolution(List<bool[]> population, int crossoversCount, int mutationPercent, int ages)
+		public static void Evolution(List<Element> population, int crossoversCount, int mutationPercent, int ages)
 		{
+			var fittest = population[0];
+			var counter = 0;
+
 			for (int i = 0; i < ages; i++)
 			{
 				population = PassAge(population, crossoversCount, mutationPercent);
 
-				var fittest = population[0];
+				var newFittest = population[0];
 
-				var value = 0;
-				for (int j = 0; j < NumberOfItems; j++)
+				if (newFittest.Fitness > fittest.Fitness)
 				{
-					if (fittest[j])
-					{
-						value += items[j].Value;
-					}
+					counter = 0;
+					fittest = newFittest;
+				}
+				else
+				{
+					counter++;
 				}
 
-				Console.WriteLine($"{string.Join(' ', fittest.Select(x => x ? 1 : 0))} - {value}");
+				Console.WriteLine($"{fittest.Representation} - {fittest.Fitness}");
+				if (counter > 5)
+				{
+					Console.WriteLine("No progress last 5 ages");
+					break;
+				}
 			}
 		}
 
-		private static List<bool[]> PassAge(List<bool[]> population, int crossoversCount, int mutationPercent)
+		private static List<Element> PassAge(List<Element> population, int crossoversCount, int mutationPercent)
 		{
 			var children = AgeCrossovers(population, crossoversCount, mutationPercent);
 			population.AddRange(children);
 
 			var nextPopulation = population
-				.OrderByDescending(element => Fitness(element))
+				.OrderByDescending(element => element.Fitness)
 				.Take(SizeOfPopulation)
 				.ToList();
 
 			return nextPopulation;
 		}
 
-		public static List<bool[]> AgeCrossovers(List<bool[]> population, int crossoversCount, int mutationPercent)
+		public static List<Element> AgeCrossovers(List<Element> population, int crossoversCount, int mutationPercent)
 		{
-			var children = new List<bool[]>();
+			var children = new List<Element>();
 
 			var pool = population
 				.SelectMany((element, index) => {
@@ -70,16 +95,18 @@ namespace Solution
 
 			while (crossoversCount > 0)
 			{
-				var child = (bool[])null;
+				var child = (Element)null;
 
 				while (!IsValid(child))
 				{
-					var firstParentIndex = random.Next(0, pool.Count());
-					var secondParentIndex = random.Next(0, pool.Count());
+					var poolSize = pool.Count;
+
+					var firstParentIndex = random.Next(0, poolSize);
+					var secondParentIndex = random.Next(0, poolSize);
 
 					while (firstParentIndex == secondParentIndex)
 					{
-						secondParentIndex = random.Next(0, pool.Count());
+						secondParentIndex = random.Next(0, poolSize);
 					}
 
 					var firstParent = population[pool[firstParentIndex]];
@@ -90,7 +117,10 @@ namespace Solution
 					{
 						child = Mutate(child);
 					}
+					SetCharacteristics(child);
 				}
+
+				SetCharacteristics(child);
 
 				children.Add(child);
 
@@ -100,134 +130,141 @@ namespace Solution
 			return children;
 		}
 
-		public static bool[] Crossover(bool[] firstParent, bool[] secondParent)
+		public static Element Crossover(Element firstParent, Element secondParent)
 		{
-			var child = new List<bool>();
+			var childChromosomes = new List<bool>();
 
 			var changeCount = random.Next(1, NumberOfItems + 1);
 
-			var firstParentPart = firstParent.Take(changeCount);
-			child.AddRange(firstParentPart);
+			var firstParentPart = firstParent.Chromosomes.Take(changeCount);
+			childChromosomes.AddRange(firstParentPart);
 
-			var secondParentPart = secondParent.Skip(changeCount);
-			child.AddRange(secondParentPart);
+			var secondParentPart = secondParent.Chromosomes.Skip(changeCount);
+			childChromosomes.AddRange(secondParentPart);
 
-			return child.ToArray();
+			var child = new Element { Chromosomes = childChromosomes.ToArray() };
+
+			return child;
 		}
 
-		//public static List<bool[]> AgeMutation(List<bool[]> population, int mutationPercent)
-		//{
-		//	var mutatedElements = population
-		//		.Where(element => random.Next(1, 101) <= mutationPercent)
-		//		.Select(Mutate)
-		//		.ToList();
-
-		//	return mutatedElements;
-		//}
-
-		public static bool[] Mutate(bool[] element)
+		public static Element Mutate(Element element)
 		{
 			var firstIndex = random.Next(0, NumberOfItems);
 			var secondIndex = random.Next(firstIndex + 1, NumberOfItems);
 
 			var sequence = element
+				.Chromosomes
 				.Skip(firstIndex)
 				.Take(secondIndex - firstIndex)
 				.Reverse()
 				.ToList();
 
-			var newElement = element
+			var newChromosomes = element
+				.Chromosomes
 				.Take(firstIndex)
 				.ToList();
 
-			newElement.AddRange(sequence);
-			newElement.AddRange(element.Skip(secondIndex));
+			newChromosomes.AddRange(sequence);
+			newChromosomes.AddRange(element.Chromosomes.Skip(secondIndex));
+			element.Chromosomes = newChromosomes.ToArray();
 
-			return newElement.ToArray();
+			return element;
 		}
 
-		public static List<bool[]> CreateInitialPopulation()
+		public static List<Element> CreateInitialPopulation()
 		{
-			var population = new List<bool[]>();
-
-			var populationCheckHashSet = new HashSet<string>();
+			var populationCheck = new Dictionary<string, Element>();
 
 			var remainingItems = SizeOfPopulation;
 
 			while (remainingItems > 0)
 			{
-				var (element, joinedElement) = CreateRandomElement();
+				var element = CreateRandomElement();
 
-				while (!IsValid(element) || populationCheckHashSet.Contains(joinedElement))
+				while (!IsValid(element) || populationCheck.ContainsKey(element.Representation))
 				{
-					(element, joinedElement) = CreateRandomElement();
+					element = CreateRandomElement();
 				}
 
-				populationCheckHashSet.Add(joinedElement);
-				population.Add(element);
+				populationCheck.Add(element.Representation, element);
 
 				remainingItems--;
 			}
 
-			population = population
-				.OrderByDescending(Fitness)
-				.ToList();
+			var population = populationCheck
+					.Select(kvp => kvp.Value)
+					.OrderByDescending(element => element.Fitness)
+					.ToList();
 
 			return population;
 		}
 
-		public static (bool[] element, string stringRepresentation) CreateRandomElement()
+		public static Element CreateRandomElement()
 		{
-			var element = new bool[NumberOfItems];
+			var element = new Element();
+
 			var builder = new StringBuilder();
 
 			for (int i = 0; i < NumberOfItems; i++)
 			{
-				element[i] = (random.Next(0, 101) % 2 == 0);
-				builder.Append(element[i] ? 1 : 0);
+				element.Chromosomes[i] = (random.Next(0, 101) % 2 == 0);
+				builder.Append(element.Chromosomes[i] ? 1 : 0);
 			}
 
-			return (element, builder.ToString());
+			element.Fitness = Fitness(element);
+			element.Representation = builder.ToString();
+			element.Weight = GetWeight(element);
+
+			return element;
 		}
 
-		public static bool IsValid(bool[] element)
+		public static bool IsValid(Element element)
 		{
-			if (element == null)
-			{
-				return false;
-			}
+			return element != null && element.Weight <= MaximumWeight;
+		}
 
-			var totalWeight = 0;
+		public static int GetWeight(Element element)
+		{
+			var weight = 0;
 
 			for (int i = 0; i < NumberOfItems; i++)
 			{
-				if (element[i])
+				if (element.Chromosomes[i])
 				{
-					totalWeight += items[i].Weight;
-
-					if (totalWeight > MaximumWeight)
-					{
-						return false;
-					}
+					weight += items[i].Weight;
 				}
 			}
 
-			return true;
+			return weight;
 		}
 
-		public static int Fitness(bool[] element)
+		public static int Fitness(Element element)
 		{
 			var result = 0;
 
 			for (int i = 0; i < NumberOfItems; i++)
 			{
-				if (element[i])
+				if (element.Chromosomes[i])
 				{
 					result += items[i].Value;
 				}
 			}
 
 			return result;
+		}
+
+		public static void SetCharacteristics(Element element)
+		{
+			element.Fitness = Fitness(element);
+			element.Weight = GetWeight(element);
+
+			var builder = new StringBuilder();
+			foreach (var chromosome in element.Chromosomes)
+			{
+				builder.Append(chromosome ? '1' : '0');
+			}
+
+			element.Representation = builder.ToString();
 		}
 
 		public static void ParseInput()
@@ -239,7 +276,7 @@ namespace Solution
 
 			NumberOfItems = input[1];
 			MaximumWeight = input[0];
-			SizeOfPopulation = (int)Math.Log(Math.Pow(2, NumberOfItems));
+			SizeOfPopulation = NumberOfItems;
 
 			for (int i = 0; i < NumberOfItems; i++)
 			{
