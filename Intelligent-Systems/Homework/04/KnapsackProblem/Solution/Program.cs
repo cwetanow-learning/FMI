@@ -203,17 +203,39 @@ namespace Solution
 		{
 			var element = new Element();
 
-			var builder = new StringBuilder();
+			var indexes = Enumerable.Range(0, NumberOfItems)
+				.ToHashSet();
 
-			for (int i = 0; i < NumberOfItems; i++)
+			var iterations = NumberOfItems;
+
+			while (iterations > 0)
 			{
-				element.Chromosomes[i] = (random.Next(0, 101) % 2 == 0);
-				builder.Append(element.Chromosomes[i] ? 1 : 0);
+				var randomIndex = random.Next(0, NumberOfItems);
+
+				while (!indexes.Contains(randomIndex))
+				{
+					randomIndex = random.Next(0, NumberOfItems);
+				}
+
+				var isAdded = (random.Next(0, 101) % 2 == 0);
+
+				if (isAdded)
+				{
+					if (element.Weight + items[randomIndex].Weight > MaximumWeight)
+					{
+						break;
+					}
+
+					element.Weight += items[randomIndex].Weight;
+				}
+
+				element.Chromosomes[randomIndex] = isAdded;
+
+				indexes.Remove(randomIndex);
+				iterations--;
 			}
 
-			element.Fitness = Fitness(element);
-			element.Representation = builder.ToString();
-			element.Weight = GetWeight(element);
+			SetCharacteristics(element);
 
 			return element;
 		}
@@ -256,7 +278,11 @@ namespace Solution
 		public static void SetCharacteristics(Element element)
 		{
 			element.Fitness = Fitness(element);
-			element.Weight = GetWeight(element);
+
+			if (element.Weight == 0)
+			{
+				element.Weight = GetWeight(element);
+			}
 
 			var builder = new StringBuilder();
 			foreach (var chromosome in element.Chromosomes)
