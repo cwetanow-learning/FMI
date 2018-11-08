@@ -23,6 +23,8 @@ namespace Solution
 			public string Representation { get; set; }
 		}
 
+		public const int MaxAgesWithoutProgress = 10;
+
 		public static int NumberOfItems;
 		public static int MaximumWeight;
 		public static int SizeOfPopulation;
@@ -61,13 +63,15 @@ namespace Solution
 					counter++;
 				}
 
-				Console.WriteLine($"{fittest.Representation} - {fittest.Fitness}");
-				if (counter > 5)
+
+				if (counter > MaxAgesWithoutProgress)
 				{
-					Console.WriteLine("No progress last 5 ages");
+					Console.WriteLine($"No progress last {MaxAgesWithoutProgress} ages");
 					break;
 				}
 			}
+
+			Console.WriteLine($"{fittest.Representation} - {fittest.Fitness}");
 		}
 
 		private static List<Element> PassAge(List<Element> population, int crossoversCount, int mutationPercent)
