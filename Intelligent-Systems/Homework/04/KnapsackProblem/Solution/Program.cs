@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -72,7 +72,7 @@ namespace Solution
 
 		private static List<Element> PassAge(List<Element> population, int crossoversCount, int mutationPercent)
 		{
-			var children = AgeCrossovers(population, crossoversCount, mutationPercent);
+			var children = GetChildren(population, crossoversCount, mutationPercent);
 			population.AddRange(children);
 
 			var nextPopulation = population
@@ -83,7 +83,7 @@ namespace Solution
 			return nextPopulation;
 		}
 
-		public static List<Element> AgeCrossovers(List<Element> population, int crossoversCount, int mutationPercent)
+		public static List<Element> GetChildren(List<Element> population, int crossoversCount, int mutationPercent)
 		{
 			var children = new List<Element>();
 
@@ -117,10 +117,9 @@ namespace Solution
 					{
 						child = Mutate(child);
 					}
+
 					SetCharacteristics(child);
 				}
-
-				SetCharacteristics(child);
 
 				children.Add(child);
 
@@ -217,9 +216,9 @@ namespace Solution
 					randomIndex = random.Next(0, NumberOfItems);
 				}
 
-				var isAdded = (random.Next(0, 101) % 2 == 0);
+				var shouldAddItem = (random.Next(0, 101) % 2 == 0);
 
-				if (isAdded)
+				if (shouldAddItem)
 				{
 					if (element.Weight + items[randomIndex].Weight > MaximumWeight)
 					{
@@ -229,7 +228,7 @@ namespace Solution
 					element.Weight += items[randomIndex].Weight;
 				}
 
-				element.Chromosomes[randomIndex] = isAdded;
+				element.Chromosomes[randomIndex] = shouldAddItem;
 
 				indexes.Remove(randomIndex);
 				iterations--;
@@ -245,50 +244,26 @@ namespace Solution
 			return element != null && element.Weight <= MaximumWeight;
 		}
 
-		public static int GetWeight(Element element)
-		{
-			var weight = 0;
-
-			for (int i = 0; i < NumberOfItems; i++)
-			{
-				if (element.Chromosomes[i])
-				{
-					weight += items[i].Weight;
-				}
-			}
-
-			return weight;
-		}
-
-		public static int Fitness(Element element)
-		{
-			var result = 0;
-
-			for (int i = 0; i < NumberOfItems; i++)
-			{
-				if (element.Chromosomes[i])
-				{
-					result += items[i].Value;
-				}
-			}
-
-			return result;
-		}
-
 		public static void SetCharacteristics(Element element)
 		{
-			element.Fitness = Fitness(element);
-
-			if (element.Weight == 0)
-			{
-				element.Weight = GetWeight(element);
-			}
+			var fitness = 0;
+			var weight = 0;
 
 			var builder = new StringBuilder();
-			foreach (var chromosome in element.Chromosomes)
+
+			for (int i = 0; i < NumberOfItems; i++)
 			{
-				builder.Append(chromosome ? '1' : '0');
+				if (element.Chromosomes[i])
+				{
+					fitness += items[i].Value;
+					weight += items[i].Weight;
+				}
+
+				builder.Append(element.Chromosomes[i] ? '1' : '0');
 			}
+
+			element.Fitness = fitness;
+			element.Weight = weight;
 
 			element.Representation = builder.ToString();
 		}
