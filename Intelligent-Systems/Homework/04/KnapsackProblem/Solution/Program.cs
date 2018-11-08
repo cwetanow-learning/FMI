@@ -63,15 +63,14 @@ namespace Solution
 					counter++;
 				}
 
-
+				Console.WriteLine($"{fittest.Representation} - {fittest.Fitness}");
 				if (counter > MaxAgesWithoutProgress)
 				{
-					Console.WriteLine($"No progress last {MaxAgesWithoutProgress} ages");
+					Console.WriteLine($"No progress last {MaxAgesWithoutProgress} ages, stopping algorithm");
 					break;
 				}
 			}
 
-			Console.WriteLine($"{fittest.Representation} - {fittest.Fitness}");
 		}
 
 		private static List<Element> PassAge(List<Element> population, int crossoversCount, int mutationPercent)
