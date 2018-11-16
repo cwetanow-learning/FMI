@@ -4,22 +4,13 @@ using System.Linq;
 
 namespace TicTacToe
 {
-	public class Node
-	{
-		public int Value { get; set; }
-
-		public ICollection<Node> Children { get; set; }
-
-		public char[][] Board { get; set; }
-	}
-
 	public class Program
 	{
-		public const int BoardSize = 3;
+		public const int BoardSize = 5;
 
 		public const char Person = 'X';
 		public const char Computer = 'O';
-		public const char Empty = '-';
+		public const char EmptyCell = '-';
 
 		public static void Main(string[] args)
 		{
@@ -42,76 +33,165 @@ namespace TicTacToe
 
 					row = input[0];
 					col = input[1];
-
-					player = Computer;
 				}
 				else
 				{
-					(row, col) = GetNextMove(board, Computer);
-
-					player = Person;
+					(_, row, col) = Minimax(board, false, int.MinValue, int.MaxValue);
 				}
 
+				MakeMove(board, player, row, col);
+
+				Console.WriteLine($"After {player} plays {row}-{col}");
 				PrintBoard(board);
+				player = GetNextPlayer(player);
 			}
-		}
 
-		public static void MakeMove(char[][] board, char player, int row, int col)
-		{
-			board[row][col] = player;
-		}
+			var message = "DRAW";
 
-		public static (int row, int col) GetNextMove(char[][] board, char player)
-		{
-			var row = -1;
-			var col = -1;
-
-			return (row, col);
-		}
-
-		public static (int row, int col, int score) Minimax(char[][] board, bool isMaxPlayer, int alpha, int beta)
-		{
-			if (IsDraw(board))
+			if (!IsDraw(board))
 			{
-				return (-1, -1, 0);
+				var isMeWinner = IsWin(board, Person);
+
+				if (isMeWinner)
+				{
+					message = "YOU WIN";
+				}
+				else
+				{
+					message = "YOU LOSE";
+				}
 			}
 
-			if (IsSolution(board, Computer))
-			{
-				var emptyCount = board
-									.SelectMany(row => row)
-									.Where(cell => cell == Empty)
-									.Count();
+			Console.WriteLine(message);
+		}
 
-				return (-1, -1, emptyCount + 1);
-			}
-
+		public static (int score, int row, int col) Minimax(char[][] board, bool isMaxPlayer, int alpha, int beta)
+		{
 			var bestRow = -1;
 			var bestCol = -1;
 
-			if (isMaxPlayer)
+			if (IsGameOver(board))
 			{
+				var points = GetPoints(board);
+
+				return (points, bestRow, bestCol);
+			}
+
+			var nextMoves = GetNextMoves(board);
+
+			foreach (var (row, col) in nextMoves)
+			{
+				// Probably change, so no new init of array every time
 				var newBoard = board.Select(x => x.ToArray()).ToArray();
+				newBoard = MakeMove(newBoard, isMaxPlayer ? Person : Computer, row, col);
 
+				var (score, nextRow, nextCol) = Minimax(newBoard, !isMaxPlayer, alpha, beta);
+
+				if (isMaxPlayer)
+				{
+					if (score > alpha)
+					{
+						alpha = score;
+						bestRow = row;
+						bestCol = col;
+					}
+
+					if (alpha >= beta)
+					{
+						return (alpha, row, col);
+					}
+				}
+				else
+				{
+					if (score < beta)
+					{
+						beta = score;
+						bestRow = row;
+						bestCol = col;
+					}
+
+					if (alpha >= beta)
+					{
+						return (beta, row, col);
+					}
+				}
 			}
-			else
-			{
 
-			}
+			var bestScore = isMaxPlayer ? alpha : beta;
 
-			return (bestRow, bestCol, (isMaxPlayer ? alpha : beta));
+			return (bestScore, bestRow, bestCol);
 		}
 
-		public static char[][] GetPredefinedBoard()
+		public static List<(int row, int col)> GetNextMoves(char[][] board)
 		{
-			var board = new char[BoardSize][] {
-				new char[3]{' ', ' ' , ' ' },
-				new char[3]{' ', ' ' , ' ' },
-				new char[3]{' ',  ' ', ' ' }
-			};
+			var moves = new List<(int row, int col)>();
+
+			for (int i = 0; i < BoardSize; i++)
+			{
+				for (int j = 0; j < BoardSize; j++)
+				{
+					if (board[i][j] == EmptyCell)
+					{
+						moves.Add((i, j));
+					}
+				}
+			}
+
+			return moves;
+		}
+
+		public static int GetPoints(char[][] board)
+		{
+			if (IsDraw(board))
+			{
+				return 0;
+			}
+
+			var emptyCellsCount = board
+				.SelectMany(cell => cell)
+				.Where(cell => cell == EmptyCell)
+				.Count();
+
+			if (IsWin(board, Person))
+			{
+				return 1 + emptyCellsCount;
+			}
+
+			return -1 - emptyCellsCount;
+		}
+
+		public static bool IsDraw(char[][] board)
+		{
+			if (!IsWin(board, Person) && !IsWin(board, Computer) && IsBoardFull(board))
+			{
+				return true;
+			}
+
+			return false;
+		}
+
+		public static char GetNextPlayer(char player)
+		{
+			return player == Person ? Computer : Person;
+		}
+
+		public static char[][] MakeMove(char[][] board, char player, int row, int col)
+		{
+			board[row][col] = player;
 
 			return board;
 		}
+
+		//public static char[][] GetPredefinedBoard()
+		//{
+		//	var board = new char[BoardSize][] {
+		//		new char[3]{ EmptyCell, EmptyCell,Computer },
+		//		new char[3]{ Computer, Computer, Person },
+		//		new char[3]{ Person, EmptyCell, EmptyCell }
+		//	};
+
+		//	return board;
+		//}
 
 		public static void PrintBoard(char[][] board)
 		{
@@ -128,25 +208,25 @@ namespace TicTacToe
 			var board = new char[BoardSize][];
 			for (int i = 0; i < BoardSize; i++)
 			{
-				board[i] = Enumerable.Repeat(Empty, BoardSize)
+				board[i] = Enumerable.Repeat(EmptyCell, BoardSize)
 					.ToArray();
 			}
 
 			return board;
 		}
 
-		public static bool IsDraw(char[][] board)
+		public static bool IsBoardFull(char[][] board)
 		{
-			var isDraw = !board
+			var isFull = !board
 				.SelectMany(b => b)
-				.Any(c => c == Empty);
+				.Any(c => c == EmptyCell);
 
-			return isDraw;
+			return isFull;
 		}
 
 		public static bool IsGameOver(char[][] board)
 		{
-			if (IsSolution(board, Person) || IsSolution(board, Computer))
+			if (IsWin(board, Person) || IsWin(board, Computer))
 			{
 				return true;
 			}
@@ -154,7 +234,7 @@ namespace TicTacToe
 			return IsDraw(board);
 		}
 
-		public static bool IsSolution(char[][] board, char player)
+		public static bool IsWin(char[][] board, char player)
 		{
 			var isLeftDiagonalSolution = true;
 			var isRightDiagonalSolution = true;
