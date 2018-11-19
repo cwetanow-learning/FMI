@@ -6,7 +6,7 @@ namespace TicTacToe
 {
 	public class Program
 	{
-		public const int BoardSize = 5;
+		public const int BoardSize = 3;
 
 		public const char Person = 'X';
 		public const char Computer = 'O';
