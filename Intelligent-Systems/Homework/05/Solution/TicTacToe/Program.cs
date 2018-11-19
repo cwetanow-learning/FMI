@@ -81,11 +81,11 @@ namespace TicTacToe
 
 			foreach (var (row, col) in nextMoves)
 			{
-				// Probably change, so no new init of array every time
-				var newBoard = board.Select(x => x.ToArray()).ToArray();
-				newBoard = MakeMove(newBoard, isMaxPlayer ? Person : Computer, row, col);
+				board = MakeMove(board, isMaxPlayer ? Person : Computer, row, col);
 
-				var (score, nextRow, nextCol) = Minimax(newBoard, !isMaxPlayer, alpha, beta);
+				var (score, nextRow, nextCol) = Minimax(board, !isMaxPlayer, alpha, beta);
+
+				board = ReverseMove(board, row, col);
 
 				if (isMaxPlayer)
 				{
@@ -178,6 +178,13 @@ namespace TicTacToe
 		public static char[][] MakeMove(char[][] board, char player, int row, int col)
 		{
 			board[row][col] = player;
+
+			return board;
+		}
+
+		public static char[][] ReverseMove(char[][] board, int row, int col)
+		{
+			board[row][col] = EmptyCell;
 
 			return board;
 		}
