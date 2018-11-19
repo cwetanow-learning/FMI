@@ -182,16 +182,16 @@ namespace TicTacToe
 			return board;
 		}
 
-		//public static char[][] GetPredefinedBoard()
-		//{
-		//	var board = new char[BoardSize][] {
-		//		new char[3]{ EmptyCell, EmptyCell,Computer },
-		//		new char[3]{ Computer, Computer, Person },
-		//		new char[3]{ Person, EmptyCell, EmptyCell }
-		//	};
+		public static char[][] GetPredefinedBoard()
+		{
+			var board = new char[BoardSize][] {
+				new char[3]{ EmptyCell, EmptyCell,Computer },
+				new char[3]{ Computer, Computer, Person },
+				new char[3]{ Person, EmptyCell, EmptyCell }
+			};
 
-		//	return board;
-		//}
+			return board;
+		}
 
 		public static void PrintBoard(char[][] board)
 		{
