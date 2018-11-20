@@ -6,6 +6,32 @@ namespace TicTacToe
 {
 	public class Program
 	{
+		public class Node
+		{
+			public string BoardRepresentation { get; set; }
+
+			public int BestRow { get; set; }
+			public int BestCol { get; set; }
+
+			public Node BestChild { get; set; }
+
+			public bool BoardEquals(char[][] board)
+			{
+				var representation = CreateRepresentation(board);
+
+				return this.BoardRepresentation.Equals(representation);
+			}
+
+			public static string CreateRepresentation(char[][] board)
+			{
+				var representation = string.Join(string.Empty, board
+					.SelectMany(row => row)
+					.Select(cell => cell));
+
+				return representation;
+			}
+		}
+
 		public const int BoardSize = 3;
 
 		public const char Person = 'X';
@@ -18,6 +44,8 @@ namespace TicTacToe
 
 			Console.WriteLine("You are X, play first?");
 			var player = Console.ReadLine() == "y" ? Person : Computer;
+
+			var node = (Node)null;
 
 			while (!IsGameOver(board))
 			{
@@ -36,7 +64,20 @@ namespace TicTacToe
 				}
 				else
 				{
-					(_, row, col) = Minimax(board, false, int.MinValue, int.MaxValue);
+					if (node == null || node.BestChild == null || !node.BestChild.BoardEquals(board))
+					{
+						(_, node) = Minimax(board, false, int.MinValue, int.MaxValue);
+					}
+
+					if (node.BestChild.BoardEquals(board))
+					{
+						node = node.BestChild;
+					}
+
+					row = node.BestRow;
+					col = node.BestCol;
+
+					node = node.BestChild;
 				}
 
 				MakeMove(board, player, row, col);
@@ -65,7 +106,7 @@ namespace TicTacToe
 			Console.WriteLine(message);
 		}
 
-		public static (int score, int row, int col) Minimax(char[][] board, bool isMaxPlayer, int alpha, int beta)
+		public static (int score, Node node) Minimax(char[][] board, bool isMaxPlayer, int alpha, int beta)
 		{
 			var bestRow = -1;
 			var bestCol = -1;
@@ -74,8 +115,16 @@ namespace TicTacToe
 			{
 				var points = GetPoints(board);
 
-				return (points, bestRow, bestCol);
+				var node = new Node {
+					BestRow = bestRow,
+					BestCol = bestCol,
+					BoardRepresentation = Node.CreateRepresentation(board)
+				};
+
+				return (points, node);
 			}
+
+			var newNode = (Node)null;
 
 			var nextMoves = GetNextMoves(board);
 
@@ -83,7 +132,7 @@ namespace TicTacToe
 			{
 				board = MakeMove(board, isMaxPlayer ? Person : Computer, row, col);
 
-				var (score, nextRow, nextCol) = Minimax(board, !isMaxPlayer, alpha, beta);
+				var (score, nextNode) = Minimax(board, !isMaxPlayer, alpha, beta);
 
 				board = ReverseMove(board, row, col);
 
@@ -94,11 +143,25 @@ namespace TicTacToe
 						alpha = score;
 						bestRow = row;
 						bestCol = col;
+
+						newNode = new Node {
+							BestRow = bestRow,
+							BestCol = bestCol,
+							BoardRepresentation = Node.CreateRepresentation(board),
+							BestChild = nextNode
+						};
 					}
 
 					if (alpha >= beta)
 					{
-						return (alpha, row, col);
+						var node = new Node {
+							BestRow = row,
+							BestCol = col,
+							BoardRepresentation = Node.CreateRepresentation(board),
+							BestChild = nextNode
+						};
+
+						return (alpha, node);
 					}
 				}
 				else
@@ -108,18 +171,32 @@ namespace TicTacToe
 						beta = score;
 						bestRow = row;
 						bestCol = col;
+
+						newNode = new Node {
+							BestRow = bestRow,
+							BestCol = bestCol,
+							BoardRepresentation = Node.CreateRepresentation(board),
+							BestChild = nextNode
+						};
 					}
 
 					if (alpha >= beta)
 					{
-						return (beta, row, col);
+						var node = new Node {
+							BestRow = row,
+							BestCol = col,
+							BoardRepresentation = Node.CreateRepresentation(board),
+							BestChild = nextNode
+						};
+
+						return (beta, node);
 					}
 				}
 			}
 
 			var bestScore = isMaxPlayer ? alpha : beta;
 
-			return (bestScore, bestRow, bestCol);
+			return (bestScore, newNode);
 		}
 
 		public static List<(int row, int col)> GetNextMoves(char[][] board)
