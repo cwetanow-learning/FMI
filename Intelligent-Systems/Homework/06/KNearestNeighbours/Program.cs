@@ -24,23 +24,98 @@ namespace KNearestNeighbours
 		public double PetalWidth { get; set; }
 	}
 
+	public class GroupedNeighbours : IComparable<GroupedNeighbours>
+	{
+		public InstanceClass Classification { get; set; }
+		public double DistanceSum { get; set; }
+
+		public int CompareTo(GroupedNeighbours other)
+		{
+			return this.DistanceSum.CompareTo(other.DistanceSum);
+		}
+	}
+
 	public class Program
 	{
 		public static void Main(string[] args)
 		{
 			var dataset = GetData("../../../iris.txt");
+
+			var k = 5; // int.Parse(Console.ReadLine());
+
+
+
+			//for (int i = 0; i < 10; i++)
+			//{
+			//	Shuffle(dataset);
+
+			//	var trainingData = dataset.Skip(dataset.Count / 5);
+			//	var testData = dataset.Take(dataset.Count / 5);
+
+			//	var mistakes = 0;
+
+			//	foreach (var instance in testData)
+			//	{
+			//		var neighbours = GetNearestNeighbours(trainingData, k, instance);
+
+			//		var selectedClass = Classify(instance, neighbours);
+
+			//		if (selectedClass != instance.Class)
+			//		{
+			//			mistakes++;
+			//		}
+			//	}
+			//}
 		}
 
-		public static List<Instance> GetData(string filename)
+		public static InstanceClass Classify(Instance instance, IEnumerable<Instance> nearestNeighbours)
+		{
+			var classification = nearestNeighbours
+				.GroupBy(n => n.Class)
+				.Select(group => new { classification = group.Key, distanceSum = group.Select(x => 1 / GetDistance(instance, x)).Sum() })
+				.OrderByDescending(x => x.distanceSum)
+				.Select(x => x.classification)
+				.FirstOrDefault();
+
+			return classification;
+		}
+
+		public static ICollection<Instance> GetNearestNeighbours(IEnumerable<Instance> dataset, int k, Instance instance)
+		{
+			var neighbours = dataset
+				.OrderBy(i => GetDistance(instance, i))
+				.ToList();
+
+			return neighbours;
+		}
+
+		public static double GetDistance(Instance instance, Instance otherInstance)
+		{
+			var distance = Math.Pow(instance.PetalLength - otherInstance.PetalLength, 2);
+			distance += Math.Pow(instance.PetalWidth - otherInstance.PetalWidth, 2);
+			distance += Math.Pow(instance.SepalLength - otherInstance.SepalLength, 2);
+			distance += Math.Pow(instance.SepalWidth - otherInstance.SepalWidth, 2);
+
+			distance = Math.Sqrt(distance);
+
+			return distance;
+		}
+
+		public static IList<Instance> GetData(string filename)
 		{
 			var dataset = new List<Instance>();
 
 			var reader = new StreamReader(filename);
 			var line = string.Empty;
 
-			do
+			while (true)
 			{
 				line = reader.ReadLine();
+
+				if (string.IsNullOrEmpty(line))
+				{
+					break;
+				}
 
 				var splitted = line
 					.Split(',', StringSplitOptions.RemoveEmptyEntries)
@@ -56,8 +131,7 @@ namespace KNearestNeighbours
 				};
 
 				dataset.Add(entry);
-			} while (!string.IsNullOrEmpty(line));
-
+			}
 
 			return dataset;
 		}
