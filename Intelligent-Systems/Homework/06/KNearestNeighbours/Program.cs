@@ -37,39 +37,50 @@ namespace KNearestNeighbours
 
 	public class Program
 	{
+		public static IEnumerable<Instance> TrainingData;
+
 		public static void Main(string[] args)
 		{
 			var dataset = GetData("../../../iris.txt");
+			dataset.Shuffle();
 
-			var k = 5; // int.Parse(Console.ReadLine());
+			// N fold cross validation (N=5)
+			var n = dataset.Count / 5;
 
+			for (int k = 0; k < dataset.Count / 5; k++)
+			{
+				var errors = 0.0;
 
+				for (var i = 0; i < 5; i++)
+				{
+					var testData = dataset
+						.Skip(n * i)
+						.Take(n);
 
-			//for (int i = 0; i < 10; i++)
-			//{
-			//	Shuffle(dataset);
+					TrainingData = dataset
+						.Except(testData);
 
-			//	var trainingData = dataset.Skip(dataset.Count / 5);
-			//	var testData = dataset.Take(dataset.Count / 5);
+					foreach (var item in testData)
+					{
+						var classification = Classify(item, k);
 
-			//	var mistakes = 0;
+						if (classification != item.Class)
+						{
+							errors++;
+						}
+					}
 
-			//	foreach (var instance in testData)
-			//	{
-			//		var neighbours = GetNearestNeighbours(trainingData, k, instance);
+				}
 
-			//		var selectedClass = Classify(instance, neighbours);
-
-			//		if (selectedClass != instance.Class)
-			//		{
-			//			mistakes++;
-			//		}
-			//	}
-			//}
+				errors /= 5;
+				Console.WriteLine($"Average errors: {errors}; K= {k}");
+			}
 		}
 
-		public static InstanceClass Classify(Instance instance, IEnumerable<Instance> nearestNeighbours)
+		public static InstanceClass Classify(Instance instance, int k)
 		{
+			var nearestNeighbours = GetNearestNeighbours(k, instance);
+
 			var classification = nearestNeighbours
 				.GroupBy(n => n.Class)
 				.Select(group => new { classification = group.Key, distanceSum = group.Select(x => 1 / GetDistance(instance, x)).Sum() })
@@ -80,9 +91,9 @@ namespace KNearestNeighbours
 			return classification;
 		}
 
-		public static ICollection<Instance> GetNearestNeighbours(IEnumerable<Instance> dataset, int k, Instance instance)
+		public static ICollection<Instance> GetNearestNeighbours(int k, Instance instance)
 		{
-			var neighbours = dataset
+			var neighbours = TrainingData
 				.OrderBy(i => GetDistance(instance, i))
 				.ToList();
 
