@@ -44,10 +44,9 @@ namespace KNearestNeighbours
 			var dataset = GetData("../../../iris.txt");
 			dataset.Shuffle();
 
-			// N fold cross validation (N=5)
 			var n = dataset.Count / 5;
 
-			for (int k = 0; k < dataset.Count / 5; k++)
+			for (int k = 5; k < dataset.Count / 5; k++)
 			{
 				var errors = 0.0;
 
