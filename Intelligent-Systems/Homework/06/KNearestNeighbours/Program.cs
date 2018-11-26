@@ -42,11 +42,12 @@ namespace KNearestNeighbours
 		public static void Main(string[] args)
 		{
 			var dataset = GetData("../../../iris.txt");
+			dataset.Shuffle();
 
+			var k = (int)Math.Sqrt(dataset.Count);
 
-			//var k = (int)Math.Sqrt(dataset.Count);
-
-			TestWithDifferentK(dataset);
+			var errors = DoTest(dataset, k, 5);
+			Console.WriteLine(errors / (double)5);
 		}
 
 		public static void TestWithDifferentK(IList<Instance> dataset)
@@ -82,14 +83,16 @@ namespace KNearestNeighbours
 
 			var nthOfDataset = dataset.Count / n;
 
-			for (var i = 0; i < 5; i++)
+			for (var i = 0; i < n; i++)
 			{
 				var testData = dataset
 					.Skip(nthOfDataset * i)
-					.Take(nthOfDataset);
+					.Take(nthOfDataset)
+					.ToList();
 
 				TrainingData = dataset
-					.Except(testData);
+					.Except(testData)
+					.ToList();
 
 				foreach (var item in testData)
 				{
