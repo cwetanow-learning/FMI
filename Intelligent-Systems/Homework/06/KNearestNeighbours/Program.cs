@@ -78,7 +78,7 @@ namespace KNearestNeighbours
 
 		public static InstanceClass Classify(Instance instance, int k)
 		{
-			var nearestNeighbours = GetNearestNeighbours(k, instance);
+			var nearestNeighbours = GetNearestNeighbours(instance, k);
 
 			var classification = nearestNeighbours
 				.GroupBy(n => n.Class)
@@ -90,10 +90,11 @@ namespace KNearestNeighbours
 			return classification;
 		}
 
-		public static ICollection<Instance> GetNearestNeighbours(int k, Instance instance)
+		public static ICollection<Instance> GetNearestNeighbours(Instance instance, int k)
 		{
 			var neighbours = TrainingData
 				.OrderBy(i => GetDistance(instance, i))
+				.Take(k)
 				.ToList();
 
 			return neighbours;
