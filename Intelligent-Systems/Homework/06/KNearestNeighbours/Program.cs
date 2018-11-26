@@ -42,38 +42,67 @@ namespace KNearestNeighbours
 		public static void Main(string[] args)
 		{
 			var dataset = GetData("../../../iris.txt");
-			dataset.Shuffle();
 
+
+			//var k = (int)Math.Sqrt(dataset.Count);
+
+			TestWithDifferentK(dataset);
+		}
+
+		public static void TestWithDifferentK(IList<Instance> dataset)
+		{
 			var n = dataset.Count / 5;
 
-			for (int k = 5; k < dataset.Count / 5; k++)
+			var results = Enumerable.Range(5, n - 5)
+				.ToDictionary(item => item, item => 0.0);
+
+			var repeats = 10;
+
+			for (int j = 0; j < repeats; j++)
 			{
-				var errors = 0.0;
-
-				for (var i = 0; i < 5; i++)
+				dataset.Shuffle();
+				for (int k = 5; k < n; k++)
 				{
-					var testData = dataset
-						.Skip(n * i)
-						.Take(n);
+					var errors = DoTest(dataset, k, 5);
 
-					TrainingData = dataset
-						.Except(testData);
-
-					foreach (var item in testData)
-					{
-						var classification = Classify(item, k);
-
-						if (classification != item.Class)
-						{
-							errors++;
-						}
-					}
-
+					results[k] += errors;
 				}
-
-				errors /= 5;
-				Console.WriteLine($"Average errors: {errors}; K= {k}");
 			}
+
+			foreach (var kvp in results)
+			{
+				var result = 100 - kvp.Value / (repeats * 5);
+				Console.WriteLine($"K: {kvp.Key}; Accuracy {result}%");
+			}
+		}
+
+		public static int DoTest(IList<Instance> dataset, int k, int n)
+		{
+			var errors = 0;
+
+			var nthOfDataset = dataset.Count / n;
+
+			for (var i = 0; i < 5; i++)
+			{
+				var testData = dataset
+					.Skip(nthOfDataset * i)
+					.Take(nthOfDataset);
+
+				TrainingData = dataset
+					.Except(testData);
+
+				foreach (var item in testData)
+				{
+					var classification = Classify(item, k);
+
+					if (classification != item.Class)
+					{
+						errors++;
+					}
+				}
+			}
+
+			return errors;
 		}
 
 		public static InstanceClass Classify(Instance instance, int k)
