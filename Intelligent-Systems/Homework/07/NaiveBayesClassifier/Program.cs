@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -6,9 +7,63 @@ namespace NaiveBayesClassifier
 {
 	public class Program
 	{
+		private static readonly string[] Classes = {
+			"HandicappedInfants",
+			"WaterProjectCostSharing",
+			"AdoptionOfTheBudgetResolution",
+			"PhysicianFeeFreeze",
+			"ElSalvadorAid",
+			"ReligiousGroupsInSchools",
+			"AntiSatelliteTestBan",
+			"AidToNicaraguanContras",
+			"MxMissile",
+			"Immigration",
+			"SynfuelsCorporationCutback",
+			"EducationSpending",
+			"SuperfundRightToSue",
+			"Crime",
+			"DutyFreeExports",
+			"ExportAdministrationActSouthAfrica"
+		};
+
 		public static void Main(string[] args)
 		{
 			var dataset = GetDataset("../../../data.txt");
+
+		}
+
+		public static void DoTests(IList<Instance> dataset)
+		{
+			var n = 10;
+			var nthOfDatasetCount = dataset.Count / n;
+
+			for (int i = 0; i < n; i++)
+			{
+				var testData = dataset
+					.Skip(i * nthOfDatasetCount)
+					.Take(nthOfDatasetCount)
+					.ToList();
+
+				var trainingData = dataset
+					.Except(testData)
+					.ToList();
+
+				var errors = Test(trainingData, testData);
+			}
+		}
+
+		public static int Test(List<Instance> trainingData, List<Instance> testData)
+		{
+			var erros = 0;
+
+
+
+			foreach (var item in testData)
+			{
+
+			}
+
+			return erros;
 		}
 
 		public static IList<Instance> GetDataset(string filename)
@@ -33,28 +88,22 @@ namespace NaiveBayesClassifier
 
 				var instance = new Instance {
 					ClassName = splitted[0],
-					HandicappedInfants = splitted[1] == "?" ? (bool?)null : splitted[1] == "y",
-					WaterProjectCostSharing = splitted[2] == "?" ? (bool?)null : splitted[2] == "y",
-					AdoptionOfTheBudgetResolution = splitted[3] == "?" ? (bool?)null : splitted[3] == "y",
-					PhysicianFeeFreeze = splitted[4] == "?" ? (bool?)null : splitted[4] == "y",
-					ElSalvadorAid = splitted[5] == "?" ? (bool?)null : splitted[5] == "y",
-					ReligiousGroupsInSchools = splitted[6] == "?" ? (bool?)null : splitted[6] == "y",
-					AntiSatelliteTestBan = splitted[7] == "?" ? (bool?)null : splitted[7] == "y",
-					AidToNicaraguanContras = splitted[8] == "?" ? (bool?)null : splitted[8] == "y",
-					MxMissile = splitted[9] == "?" ? (bool?)null : splitted[9] == "y",
-					Immigration = splitted[10] == "?" ? (bool?)null : splitted[10] == "y",
-					SynfuelsCorporationCutback = splitted[11] == "?" ? (bool?)null : splitted[11] == "y",
-					EducationSpending = splitted[12] == "?" ? (bool?)null : splitted[12] == "y",
-					SuperfundRightToSue = splitted[13] == "?" ? (bool?)null : splitted[13] == "y",
-					Crime = splitted[14] == "?" ? (bool?)null : splitted[14] == "y",
-					DutyFreeExports = splitted[15] == "?" ? (bool?)null : splitted[15] == "y",
-					ExportAdministrationActSouthAfrica = splitted[16] == "?" ? (bool?)null : splitted[16] == "y"
+					Classes = GetClasses(splitted)
 				};
 
 				dataset.Add(instance);
 			}
 
 			return dataset;
+		}
+
+		private static IDictionary<string, bool?> GetClasses(List<string> values)
+		{
+			var classes = Classes
+				.Select((@class, index) => new { Class = @class, Value = values[index] == "?" ? (bool?)null : values[index] == "y" })
+				.ToDictionary(x => x.Class, x => x.Value);
+
+			return classes;
 		}
 	}
 }
