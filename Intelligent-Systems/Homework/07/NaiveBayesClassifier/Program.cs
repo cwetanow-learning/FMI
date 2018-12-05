@@ -69,38 +69,37 @@ namespace NaiveBayesClassifier
 
 		private static void GetAggregatedStats(List<Instance> trainingData)
 		{
-			var frequencyTables = new Dictionary<string, FrequencyTable<bool>>();
+			var frequencyTables = new Dictionary<string, Dictionary<string, FrequencyTable<bool>>>();
 
 			foreach (var item in trainingData)
 			{
-				foreach (var classKeyValuePair in item.Classes)
+				var itemClass = item.ClassName;
+
+				if (!frequencyTables.ContainsKey(itemClass))
 				{
-					if (classKeyValuePair.Value.HasValue)
+					frequencyTables.Add(itemClass, new Dictionary<string, FrequencyTable<bool>>());
+				}
+
+				var classFrequencyTable = frequencyTables[itemClass];
+
+				foreach (var option in item.Options)
+				{
+					if (option.Value.HasValue)
 					{
-						if (!frequencyTables.ContainsKey(classKeyValuePair.Key))
+						if (!classFrequencyTable.ContainsKey(option.Key))
 						{
-							frequencyTables.Add(classKeyValuePair.Key, new FrequencyTable<bool>());
+							classFrequencyTable.Add(option.Key, new FrequencyTable<bool>());
 						}
 
-						var classFrequencyTable = frequencyTables[classKeyValuePair.Key];
+						var optionTable = classFrequencyTable[option.Key];
 
-						if (!classFrequencyTable.AggregatedData.ContainsKey(item.ClassName))
+						if (!optionTable.Options.ContainsKey(option.Value.Value))
 						{
-							classFrequencyTable.AggregatedData.Add(item.ClassName, new Dictionary<bool, int>());
+							optionTable.Options.Add(option.Value.Value, 0);
 						}
 
-						var classFrequencyTableRow = classFrequencyTable.AggregatedData[item.ClassName];
-
-						if (classFrequencyTableRow.ContainsKey(classKeyValuePair.Value.Value))
-						{
-							classFrequencyTableRow[classKeyValuePair.Value.Value] = classFrequencyTableRow[classKeyValuePair.Value.Value] + 1;
-						}
-						else
-						{
-							classFrequencyTableRow.Add(classKeyValuePair.Value.Value, 1);
-						}
-
-						classFrequencyTable.TotalItems++;
+						optionTable.Options[option.Value.Value] = optionTable.Options[option.Value.Value] + 1;
+						optionTable.TotalItems++;
 					}
 				}
 			}
@@ -128,7 +127,7 @@ namespace NaiveBayesClassifier
 
 				var instance = new Instance {
 					ClassName = splitted[0],
-					Classes = GetClasses(splitted.Skip(1).ToList())
+					Options = GetClasses(splitted.Skip(1).ToList())
 				};
 
 				dataset.Add(instance);

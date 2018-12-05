@@ -2,16 +2,16 @@
 
 namespace NaiveBayesClassifier
 {
-	public class FrequencyTable<TClass>
+	public class FrequencyTable<TOption>
 	{
 		public FrequencyTable()
 		{
-			this.AggregatedData = new Dictionary<string, IDictionary<TClass, int>>();
+			this.Options = new Dictionary<TOption, int>();
 			this.TotalItems = 0;
 		}
 
 		public int TotalItems { get; set; }
 
-		public IDictionary<string, IDictionary<TClass, int>> AggregatedData { get; set; }
+		public IDictionary<TOption, int> Options { get; set; }
 	}
 }
