@@ -7,7 +7,7 @@ namespace NaiveBayesClassifier
 {
 	public class Program
 	{
-		private static readonly string[] Classes = {
+		private static readonly string[] OptionNames = {
 			"HandicappedInfants",
 			"WaterProjectCostSharing",
 			"AdoptionOfTheBudgetResolution",
@@ -26,9 +26,12 @@ namespace NaiveBayesClassifier
 			"ExportAdministrationActSouthAfrica"
 		};
 
+		private static readonly HashSet<string> Classes = new HashSet<string>();
+
 		public static void Main(string[] args)
 		{
 			var dataset = GetDataset("../../../data.txt");
+			dataset.Shuffle();
 
 			DoTests(dataset);
 		}
@@ -50,6 +53,8 @@ namespace NaiveBayesClassifier
 					.ToList();
 
 				var errors = Test(trainingData, testData);
+
+				Console.WriteLine($"{i + 1}th of dataset; {errors} errors from {testData.Count} attempts; {1 - ((double)errors / testData.Count)}%");
 			}
 		}
 
@@ -57,17 +62,72 @@ namespace NaiveBayesClassifier
 		{
 			var erros = 0;
 
-			GetAggregatedStats(trainingData);
+			var frequencyTables = GetFrequencyTables(trainingData);
+			var classProbabilities = GetClassProbabilities(trainingData);
 
 			foreach (var item in testData)
 			{
+				var classification = Classify(item, frequencyTables, classProbabilities);
 
+				if (!classification.Equals(item.ClassName))
+				{
+					erros++;
+				}
 			}
 
 			return erros;
 		}
 
-		private static void GetAggregatedStats(List<Instance> trainingData)
+		private static Dictionary<string, double> GetClassProbabilities(List<Instance> trainingData)
+		{
+			var totalItems = trainingData.Count;
+
+			return trainingData
+					.GroupBy(instance => instance.ClassName)
+					.ToDictionary(group => group.Key, group => group.Count() / (double)totalItems);
+
+		}
+
+		private static string Classify(Instance item, Dictionary<string, Dictionary<string, FrequencyTable<bool>>> frequencyTables, Dictionary<string, double> classProbabilities)
+		{
+			var classification = string.Empty;
+			var bestProbability = double.MinValue;
+
+			foreach (var @class in Classes)
+			{
+				var probability = classProbabilities[@class];
+
+				foreach (var option in item.Options)
+				{
+					if (option.Value.HasValue)
+					{
+						var optionFrequencyTable = frequencyTables[@class][option.Key];
+
+						if (optionFrequencyTable.Options.ContainsKey(option.Value.Value))
+						{
+							var optionProbability = optionFrequencyTable.Options[option.Value.Value] / (double)optionFrequencyTable.TotalItems;
+
+							probability *= optionProbability;
+						}
+						else
+						{
+							probability = 0;
+							break;
+						}
+					}
+				}
+
+				if (probability > bestProbability)
+				{
+					bestProbability = probability;
+					classification = @class;
+				}
+			}
+
+			return classification;
+		}
+
+		private static Dictionary<string, Dictionary<string, FrequencyTable<bool>>> GetFrequencyTables(List<Instance> trainingData)
 		{
 			var frequencyTables = new Dictionary<string, Dictionary<string, FrequencyTable<bool>>>();
 
@@ -103,6 +163,8 @@ namespace NaiveBayesClassifier
 					}
 				}
 			}
+
+			return frequencyTables;
 		}
 
 		public static IList<Instance> GetDataset(string filename)
@@ -130,6 +192,11 @@ namespace NaiveBayesClassifier
 					Options = GetClasses(splitted.Skip(1).ToList())
 				};
 
+				if (!Classes.Contains(instance.ClassName))
+				{
+					Classes.Add(instance.ClassName);
+				}
+
 				dataset.Add(instance);
 			}
 
@@ -138,7 +205,7 @@ namespace NaiveBayesClassifier
 
 		private static IDictionary<string, bool?> GetClasses(List<string> values)
 		{
-			var classes = Classes
+			var classes = OptionNames
 				.Select((@class, index) => new { Class = @class, Value = values[index] == "?" ? (bool?)null : values[index] == "y" })
 				.ToDictionary(x => x.Class, x => x.Value);
 
