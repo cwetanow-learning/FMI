@@ -30,6 +30,7 @@ namespace NaiveBayesClassifier
 		{
 			var dataset = GetDataset("../../../data.txt");
 
+			DoTests(dataset);
 		}
 
 		public static void DoTests(IList<Instance> dataset)
@@ -56,7 +57,7 @@ namespace NaiveBayesClassifier
 		{
 			var erros = 0;
 
-
+			GetAggregatedStats(trainingData);
 
 			foreach (var item in testData)
 			{
@@ -64,6 +65,45 @@ namespace NaiveBayesClassifier
 			}
 
 			return erros;
+		}
+
+		private static void GetAggregatedStats(List<Instance> trainingData)
+		{
+			var frequencyTables = new Dictionary<string, FrequencyTable<bool>>();
+
+			foreach (var item in trainingData)
+			{
+				foreach (var classKeyValuePair in item.Classes)
+				{
+					if (classKeyValuePair.Value.HasValue)
+					{
+						if (!frequencyTables.ContainsKey(classKeyValuePair.Key))
+						{
+							frequencyTables.Add(classKeyValuePair.Key, new FrequencyTable<bool>());
+						}
+
+						var classFrequencyTable = frequencyTables[classKeyValuePair.Key];
+
+						if (!classFrequencyTable.AggregatedData.ContainsKey(item.ClassName))
+						{
+							classFrequencyTable.AggregatedData.Add(item.ClassName, new Dictionary<bool, int>());
+						}
+
+						var classFrequencyTableRow = classFrequencyTable.AggregatedData[item.ClassName];
+
+						if (classFrequencyTableRow.ContainsKey(classKeyValuePair.Value.Value))
+						{
+							classFrequencyTableRow[classKeyValuePair.Value.Value] = classFrequencyTableRow[classKeyValuePair.Value.Value] + 1;
+						}
+						else
+						{
+							classFrequencyTableRow.Add(classKeyValuePair.Value.Value, 1);
+						}
+
+						classFrequencyTable.TotalItems++;
+					}
+				}
+			}
 		}
 
 		public static IList<Instance> GetDataset(string filename)
@@ -88,7 +128,7 @@ namespace NaiveBayesClassifier
 
 				var instance = new Instance {
 					ClassName = splitted[0],
-					Classes = GetClasses(splitted)
+					Classes = GetClasses(splitted.Skip(1).ToList())
 				};
 
 				dataset.Add(instance);
