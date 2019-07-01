@@ -36,6 +36,11 @@ void evolve(char terrain[][100], int m, int n)
 
                     for(int j=-1; j<2; j++)
                     {
+                        if(j==0 && i ==0)
+                        {
+                            continue;
+                        }
+
                         if(col+j <0 || col+j == n)
                         {
                             continue;
@@ -68,34 +73,35 @@ void evolve(char terrain[][100], int m, int n)
     {
         for(int j=0; j<n; j++)
         {
-            cout << newTerrain[i][j]  << " ";
+            terrain[i][j] = newTerrain[i][j];
+            cout << terrain[i][j]  << " ";
         }
         cout << endl;
     }
-
-    terrain = newTerrain;
+    cout << endl;
 }
 
 void passYears(char terrain[][100], int m, int n, int years)
 {
     for(int i=0; i<years; i++)
     {
+        cout << i +1 << endl;
         evolve(terrain,m,n);
     }
+
 }
 
 int main()
 {
     char terrain[][100] =
     {
-        {'R','R','1','1','4','4'},
-        {'1','R','R','R','4','4'},
+        {'R','R','1','1','2','2'},
+        {'1','R','R','R','1','2'},
         {'S','1','R','R','2','3'},
         {'4','4','S','S','R','R'}
     };
 
-    //passYears(terrain,4,6,100);
-    evolve(terrain,4,6);
+    passYears(terrain,4,6,10);
 
     return 0;
 }
